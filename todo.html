@@ -1,0 +1,33 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+  
+  <input type="text" id="input">
+  <button id="btn">添加</button>
+
+  <ul id="ul">
+  </ul>
+
+  <script>
+
+    document.querySelector('#btn').addEventListener('click',function(){
+      let input = document.querySelector('#input')
+      let li = document.createElement('li')
+      li.innerText = input.value
+      document.querySelector('#ul').appendChild(li)
+      input.value = ''
+    },false)
+
+
+    let i = 1
+    let counter = document.querySelector('#counter')
+    counter.addEventListener('click',function(){
+      i = i+1 
+      counter.innerHTML = i
+    })
+  </script>
+  
+</body>
+</html>
