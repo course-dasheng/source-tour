@@ -1,0 +1,21 @@
+# 前端源码漫游记
+
+1. 源码的场景
+   1. 前端框架：Vue React生态
+   2. 脚手架：ni create-vue
+   3. 开发工具：webpack rollup vite （大致的原理）
+   4. 工具库：axios
+   5. 自动化测试:vitest
+   6. 组件库：antd, naiveui，element
+   7. ....
+2. 学习的方式
+   1. 手写mini版本，去阅读正式的源码（自己github开源）
+   2. 给仓库提pr
+   3. 写文章输出原理
+3. 课程的设计
+   1. 简单到难
+   2. 实战优先 && 提pr && 写文章输出
+   3. 内部讨论会
+   4. 准备好你的github
+   5. 使用js or ts（esno，tsup)
+      1. 先从vue的响应式 和脚手架框架开始
