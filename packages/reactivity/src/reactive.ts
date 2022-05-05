@@ -1,9 +1,7 @@
-
-
-function reactive(){
+function reactive() {
 
 }
-function shallowReactive(){
+function shallowReactive() {
 
 }
-export {reactive,shallowReactive}
+export { reactive, shallowReactive }

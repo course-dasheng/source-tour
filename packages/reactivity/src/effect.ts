@@ -1,5 +1,5 @@
-function effect(){
+function effect() {
 
 }
 
-export {effect}
+export { effect }

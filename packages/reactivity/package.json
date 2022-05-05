@@ -5,7 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "vitest",
-    "build": "vitest"
+    "build": "unbuild",
+    "lint":"eslint src --fix"
   },
   "author": "",
   "license": "ISC"
