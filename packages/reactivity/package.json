@@ -1,0 +1,12 @@
+{
+  "name": "@shengxi/reactivity",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "test": "vitest",
+    "build": "vitest"
+  },
+  "author": "",
+  "license": "ISC"
+}
