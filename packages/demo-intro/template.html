@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style type="text/css">
+    li.done{
+      text-decoration: line-through;
+      color:gray;
+    }
+  </style>
+</head>
+
+<body>
+
+<script id="templateDemo" type="text/template" >
+<h1>今天是个好日子，<%= this.name %><h1>
+<ul>
+<% for(let i = 0; i < this.todos.length; i++) { %>
+  <% let todo = this.todos[i]; %>
+  <% if(todo.done){ %>
+    <li class="done"><%= todo.title %> </li>
+  <% } else { %>
+    <li><%= todo.title %> at <%= todo.time %></li>
+  <% } %>
+<% } %>
+</ul>
+
+</script>
+  <button id="btn">修改</button>
+  <div id="app"></div>
+  <script>
+    const data = {
+      name: '大圣',
+      todos: [{
+        title: '吃饭',
+        time: '12:00',
+        done: true,
+      }, {
+        title: '睡觉',
+        time: '13:00',
+      }, {
+        title: '学习',
+        time: '14:00',
+      }],
+}
+const _template = function (str, data) {
+  // 获取元素
+  let tpl = str
+  const element = document.getElementById(str)
+  if (element) {
+    tpl = element.innerHTML
+  }
+
+  const reg = /<%([^%>]+)?%>/g
+  let code = 'var l=[];\n'
+  let cursor = 0
+
+  var add = function (line, js) {
+    if(js){
+      // =开头的是变量
+      code += line[0] !== '=' ? `${line.trim()}\n` : `l.push(${line.slice(1).trim()});\n`
+    }else{
+      code += `l.push('${line.replace(/\n/g,'')}');\n`
+    }
+  }
+  while (match = reg.exec(tpl)) {
+        add(tpl.slice(cursor, match.index)) //'html'
+        add(match[1], true) //js
+        cursor = match.index + match[0].length
+  }
+  //剩下的全部
+  add(tpl.slice(cursor))
+  code += 'return l.join("");'
+  console.log(code)
+  return new Function(code.replace(/[\r\t\n]/g, '')).apply(data)
+}
+function render() {
+  document.getElementById('app').innerHTML = _template('templateDemo', data)
+}
+render()
+function reactive(target) {
+  return new Proxy(target, {
+    get(target, key) {
+      return target[key]
+    },
+    set(traget, key, val) {
+      target[key] = val
+      render()
+    }
+  })
+}
+const obj = reactive(data)
+document.getElementById('btn').addEventListener('click', () => {
+  obj.todos[1].done = true
+  obj.todos.push({
+    title:'学习模板原理',
+    time:'20:00'
+  })
+  obj.name = 'dasheng'
+  // render()
+}, false)
+
+
+</script>
+</body>
+
+</html>
