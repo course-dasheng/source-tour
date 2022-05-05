@@ -9,5 +9,8 @@
     "lint":"eslint src --fix"
   },
   "author": "",
+  "dependencies":{
+    "@shengxj/utils":"workspace:^0.0.1"
+  },
   "license": "ISC"
 }

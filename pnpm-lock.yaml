@@ -16,6 +16,15 @@ importers:
       unbuild: 0.7.4
       vitest: 0.10.2
 
+  packages/reactivity:
+    specifiers:
+      '@shengxj/utils': workspace:^0.0.1
+    dependencies:
+      '@shengxj/utils': link:../utils
+
+  packages/utils:
+    specifiers: {}
+
 packages:
 
   /@ampproject/remapping/2.2.0:
