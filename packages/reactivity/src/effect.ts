@@ -1,3 +1,4 @@
+import {ITERATE_KEY} from './baseHandlers'
 let activeEffect = null
 // let shouldTrack = false
 // effect嵌套的时候，内层的activeEffect会覆盖外层的activeEffect，用栈管理，支持嵌套
@@ -71,21 +72,35 @@ export function track(target, type, key) {
 export function trigger(target, type, key) {
   // console.log(`触发 trigger -> target:  type:${type} key:${key}`)
   // 从targetMap中找到触发的函数，执行他
+
   const depsMap = targetMap.get(target)
   if (!depsMap) {
     // 没找到依赖
     return
   }
+
   const deps = depsMap.get(key)
-  if (!deps)
-    return 
-    // set forEach里delete和add会死循环 ，新建一个set
+
+  // set forEach里delete和add会死循环 ，新建一个set
   const depsToRun = new Set()
   deps && deps.forEach(effectFn=>{
     if(effectFn !==activeEffect){
       depsToRun.add(effectFn) // 过滤掉一个effct同时get和set的情况
     }
   })
+
+  if(type=='add'||type=="delete"){
+
+    const itrateDeps = depsMap.get(ITERATE_KEY)
+      // console.log('xx',itrateDeps)
+    itrateDeps && itrateDeps.forEach(effectFn => {
+      if (effectFn !== activeEffect) {
+        depsToRun.add(effectFn)
+      }
+    })
+
+  }
+
   depsToRun.forEach((effectFn) => {
     // 调度器
     if (effectFn.options.scheduler){

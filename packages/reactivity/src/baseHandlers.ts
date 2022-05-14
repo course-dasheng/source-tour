@@ -41,10 +41,12 @@ function createGetter(shallow: boolean) {
 
 function createSetter() {
   return function set(target, key, value, receiver) {
+    
+    const type = target.hasOwnProperty(key) ? 'set' : 'add'
     const result = Reflect.set(target, key, value, receiver)
     // const result = Reflect.set(target, key, value, receiver)
     // 在触发 set 的时候进行触发依赖
-    trigger(target, 'set', key)
+    trigger(target, type, key)
     return result
   }
 }
@@ -56,19 +58,26 @@ function has(target, key) {
 function deleteProperty(target, key) {
   const hadKey = hasOwn(target, key)
   const result = Reflect.deleteProperty(target, key)
-  console.log(1,result,hadKey)
   if (result && hadKey){
     trigger(target, 'delete', key)
   }
   return result
 }
-
-// @next ownKeys
+export const ITERATE_KEY = Symbol('iterate')
+// - Object.getOwnPropertyNames()
+// - Object.getOwnPropertySymbols()
+// - Object.keys()
+// - for…in循环
+function ownKeys(target) {
+  track(target, 'ownKeys',ITERATE_KEY)
+  return Reflect.ownKeys(target)
+}
 
 export const mutableHandlers = {
   get,
   set,
   has,
+  ownKeys,
   deleteProperty,
 }
 
@@ -76,5 +85,6 @@ export const shallowReactiveHandlers = {
   get: shallowReactiveGet,
   set,
   has,
+  ownKeys,
   deleteProperty,
 }

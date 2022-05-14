@@ -86,8 +86,28 @@ describe('测试响应式', () => {
     expect(hasFn).toHaveBeenCalledWith(true)
     delete obj.name
     expect(hasFn).toHaveBeenCalledWith(false)
-
     // expect(hasFn).toHaveBeenCalledTimes(2)
+  })
+
+  it('for 循环',()=>{
+    let obj =reactive({ name:'大圣1'})
+    let forFn = vi.fn((arg)=>{})
+    effect(()=>{
+      // console.log(Object.keys(obj))
+      // 还有for in 都和ownkeys息息相关
+      forFn(Object.keys(obj))
+      // console.log('age' in obj)
+    })
+    expect(forFn).toHaveBeenCalledTimes(1)
+    expect(forFn).toHaveBeenCalledWith(['name'])
+    obj.agexx = 1
+    // obj.demo = '1'
+    expect(forFn).toHaveBeenCalledTimes(2)
+    // expect(forFn).toHaveBeenCalledWith(['name','age'])
+
+    // delete obj.name
+    // expect(forFn).toHaveBeenCalledWith(false)
+    // expect(forFn).toHaveBeenCalledTimes(4)
   })
   
 })
