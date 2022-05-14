@@ -28,6 +28,7 @@ export function effect(fn, options:EffectOption = {}) {
 }
 
 export function track(target, type, key) {
+  if(!activeEffect) return 
   // console.log(`触发 track -> target: ${target} type:${type} key:${key}`)
 
   // 1. 先基于 target 找到对应的 dep
@@ -46,8 +47,9 @@ export function track(target, type, key) {
     targetMap.set(target, (depsMap = new Map()))
   }
   let deps = depsMap.get(key)
-  if (!deps)
+  if (!deps){
     deps = new Set()
+  }
 
   if (!deps.has(activeEffect) && activeEffect) {
     // 防止重复注册

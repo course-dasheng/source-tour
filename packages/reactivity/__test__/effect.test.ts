@@ -5,7 +5,7 @@ import {describe,it,expect} from 'vitest'
 
 describe('测试effect', () => {
 
-
+  
   it('reactive基本使用', () => {
     const ret = reactive({ num: 0 })
     let val
