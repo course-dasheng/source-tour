@@ -77,7 +77,12 @@ export function trigger(target, type, key) {
   if (!deps)
     return 
     // set forEach里delete和add会死循环 ，新建一个set
-  const depsToRun = new Set(deps)
+  const depsToRun = new Set()
+  deps && deps.forEach(effectFn=>{
+    if(effectFn !==activeEffect){
+      depsToRun.add(effectFn) // 过滤掉一个effct同时get和set的情况
+    }
+  })
   depsToRun.forEach((effectFn) => {
     // if (effectFn.scheduler){
     //   effectFn.scheduler()

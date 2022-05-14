@@ -146,4 +146,15 @@ describe('测试effect', () => {
     expect(fn1).toHaveBeenCalledTimes(2)
     // expect(fn2).toHaveBeenCalledTimes(1)
   })
+  it('prxy的无限递归问题',()=>{
+    const testFn = vi.fn(()=>{
+      const data = {age:1}
+      const obj = reactive(data)
+      effect(()=>{
+        obj.age++
+      })
+    })
+    // expect(()=>testFn()).toThrowError('Maximum call stack size exceeded')
+    expect(()=>testFn()).not.toThrowError('Maximum call stack size exceeded')
+  })
 })
