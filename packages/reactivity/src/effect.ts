@@ -10,23 +10,25 @@ interface EffectOption{
 export function effect(fn, options:EffectOption = {}) {
   // effect嵌套，通过队列管理
   const effectFn = () => {
-    try {
-      activeEffect = effectFn
-      // fn执行的时候，内部读取响应式数据的时候，就能在get配置里读取到activeEffect
-      return fn()
-    }
-    finally {
-      activeEffect = null
-    }
+    cleanup(effectFn)
+    activeEffect = effectFn
+    // fn执行的时候，内部读取响应式数据的时候，就能在get配置里读取到activeEffect
+    return fn()
   }
+  effectFn.deps = [] // 收集依赖
   // if (!options.lazy) {
     // 没有配置lazy 直接执行
-    effectFn()
+  effectFn()
   // }
   // effectFn.scheduler = options.scheduler // 调度时机 watchEffect回用到
   return effectFn
 }
-
+function cleanup(effectFn){
+  for(let i=0;i<effectFn.deps.length;i++){
+    effectFn.deps[i].delete(effectFn)
+  }
+  effectFn.deps.length =0
+}
 export function track(target, type, key) {
   if(!activeEffect) return 
   // console.log(`触发 track -> target: ${target} type:${type} key:${key}`)
@@ -54,6 +56,7 @@ export function track(target, type, key) {
   if (!deps.has(activeEffect) && activeEffect) {
     // 防止重复注册
     deps.add(activeEffect)
+    activeEffect.deps.push(deps)
   }
   depsMap.set(key, deps)
 }
@@ -68,8 +71,8 @@ export function trigger(target, type, key) {
   const deps = depsMap.get(key)
   if (!deps)
     return
-
-  deps.forEach((effectFn) => {
+  const depsToRun = new Set(deps)
+  depsToRun.forEach((effectFn) => {
     // if (effectFn.scheduler){
     //   effectFn.scheduler()
     // }else{

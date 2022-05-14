@@ -3,7 +3,7 @@ import { isReactive, reactive, shallowReactive } from '../src'
 
 describe('测试响应式', () => {
   it('响应式对象', () => {
-    const original = { foo: 1, bar: { name: 'dasheng' } }
+    const original = { foo: 1, bar: { name: '大圣' } }
     const observed = reactive(original)
     expect(observed).not.toBe(original)
     expect(isReactive(observed.foo)).toBe(false)
@@ -19,26 +19,26 @@ describe('测试响应式', () => {
     delete observed.foo
     expect('foo' in observed).toBe(false)
     // deep reactive
-    expect(observed.bar.name).toBe('dasheng')
+    expect(observed.bar.name).toBe('大圣')
     expect(isReactive(observed.bar)).toBe(true)
   })
   it('浅层响应式', () => {
-    const original = { foo: 1, bar: { name: 'dasheng' } }
+    const original = { foo: 1, bar: { name: '大圣' } }
     const observed = shallowReactive(original)
     expect(isReactive(observed.foo)).toBe(false)
     expect(isReactive(observed)).toBe(true)
     // getter
-    expect(observed.bar.name).toBe('dasheng')
+    expect(observed.bar.name).toBe('大圣')
   })
   it('为啥用WeakMap',()=>{
     const map = new Map()
     const weakmap = new WeakMap()
     //立即执行
     ~(function(){
-      const foo = { name:'dasheng' }
-      const bar = { name:'xiaosheng' }
+      const foo = { name:'大圣' }
+      const bar = { name:'小圣' }
       map.set(foo,'1')
-      weakmap.set(bar,'xiaosheng')
+      weakmap.set(bar,'小圣')
     }())
     expect(map.size).toEqual(1) 
     //weakmap会被回收
