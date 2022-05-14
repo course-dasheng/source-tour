@@ -1,6 +1,7 @@
 let activeEffect = null
 // let shouldTrack = false
-// let effectStack = []
+// effect嵌套的时候，内层的activeEffect会覆盖外层的activeEffect，用栈管理，支持嵌套
+let effectStack = []
 const targetMap = new WeakMap()
 
 interface EffectOption{
@@ -12,8 +13,12 @@ export function effect(fn, options:EffectOption = {}) {
   const effectFn = () => {
     cleanup(effectFn)
     activeEffect = effectFn
+    // 在调用副作用函数之前将当前副作用函数压栈
+    effectStack.push(effectFn)
     // fn执行的时候，内部读取响应式数据的时候，就能在get配置里读取到activeEffect
-    return fn()
+    fn()
+    effectStack.pop()
+    activeEffect = effectStack[effectStack.length - 1]
   }
   effectFn.deps = [] // 收集依赖
   // if (!options.lazy) {
@@ -70,7 +75,8 @@ export function trigger(target, type, key) {
   }
   const deps = depsMap.get(key)
   if (!deps)
-    return
+    return 
+    // set forEach里delete和add会死循环 ，新建一个set
   const depsToRun = new Set(deps)
   depsToRun.forEach((effectFn) => {
     // if (effectFn.scheduler){

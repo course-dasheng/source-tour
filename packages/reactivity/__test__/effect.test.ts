@@ -123,6 +123,27 @@ describe('测试effect', () => {
       })
     }
     expect(()=>fn()).toThrowError('死循环')
-
+  })
+  it('effect嵌套',()=>{
+    // 原始数据
+    const data = { foo: true, bar: true }
+    // 对原始数据的代理
+    const obj = reactive(data)
+    let temp1, temp2
+    let fn1 = vi.fn(()=>{})
+    let fn2 = vi.fn(()=>{})
+    effect(function effectFn1() {
+      fn1()
+      effect(function effectFn2() {
+        fn2()
+        temp2 = obj.bar
+      })
+      temp1 = obj.foo
+    })
+    expect(fn1).toHaveBeenCalledTimes(1)
+    expect(fn2).toHaveBeenCalledTimes(1)
+    obj.foo = false
+    expect(fn1).toHaveBeenCalledTimes(2)
+    // expect(fn2).toHaveBeenCalledTimes(1)
   })
 })
