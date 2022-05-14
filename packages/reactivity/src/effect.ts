@@ -6,6 +6,7 @@ const targetMap = new WeakMap()
 
 interface EffectOption{
   lazy?:boolean,
+  immediate?:boolean,
   scheduler?:(any)=>void
 }
 // type effectFnType = typeof effect
