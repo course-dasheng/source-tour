@@ -6,8 +6,9 @@ const targetMap = new WeakMap()
 
 interface EffectOption{
   lazy?:boolean,
-  scheduler?:()=>void
+  scheduler?:(any)=>void
 }
+type effectFnType = typeof effect
 export function effect(fn, options:EffectOption = {}) {
   // effect嵌套，通过队列管理
   const effectFn = () => {
@@ -25,7 +26,7 @@ export function effect(fn, options:EffectOption = {}) {
     // 没有配置lazy 直接执行
   effectFn()
   // }
-  // effectFn.scheduler = options.scheduler // 调度时机 watchEffect回用到
+  effectFn.options = options // 调度时机 watchEffect回用到
   return effectFn
 }
 function cleanup(effectFn){
@@ -84,10 +85,14 @@ export function trigger(target, type, key) {
     }
   })
   depsToRun.forEach((effectFn) => {
-    // if (effectFn.scheduler){
-    //   effectFn.scheduler()
-    // }else{
+    // 调度器
+    // @ts-ignore
+    if (effectFn.options.scheduler){
+    // @ts-ignore
+      effectFn.options.scheduler(effectFn)
+    }else{
+    // @ts-ignore
       effectFn()
-    // }
+    }
   })
 }

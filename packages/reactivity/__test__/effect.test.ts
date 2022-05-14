@@ -1,9 +1,12 @@
 
 
 import { effect,reactive, shallowReactive } from '../src'
-import {describe,it,expect,vi,afterEach} from 'vitest'
+import {describe,it,expect,vi,afterEach, beforeEach} from 'vitest'
 
 describe('测试effect', () => {
+  beforeEach(()=>{
+    vi.useFakeTimers()
+  })
   afterEach(()=>{
     vi.restoreAllMocks()
   })
@@ -157,4 +160,78 @@ describe('测试effect', () => {
     // expect(()=>testFn()).toThrowError('Maximum call stack size exceeded')
     expect(()=>testFn()).not.toThrowError('Maximum call stack size exceeded')
   })
+  it('effect的调度逻辑',async ()=>{
+
+    const data = { age: 1}
+    // 对原始数据的代理
+    const obj = reactive(data)
+    let arr1 = []
+    effect(()=>{
+      arr1.push(obj.age)
+    })
+
+    let arr = []
+    effect(() => {
+      arr.push(obj.age)
+    }, {
+      scheduler(fn) {
+        setTimeout(fn) // 下一个任务循环
+      }
+    })
+    obj.age++
+    arr.push('end')
+    arr1.push('end')
+    // set
+    await vi.runAllTimers()
+    expect(arr.join(',')).toBe('1,end,2')
+    expect(arr1.join(',')).toBe('1,2,end')
+  })
+  it('基于调度功能的性能优化,一次事件循环中修改多次，vue渲染的优化',async ()=>{
+    const data = { age: 1}
+    // 对原始数据的代理
+    const obj = reactive(data)
+  
+
+    const jobQueue = new Set()
+    // 微任务队列
+    const p = Promise.resolve()
+    
+    let isFlushing = false
+    function flushJob() {
+      if (isFlushing) return
+      isFlushing = true
+      p.then(() => {
+        jobQueue.forEach(job => job())
+      }).finally(() => {
+        isFlushing = false
+      })
+    }
+    let fnOb = {
+      count(n){
+        console.log(n)
+        return n
+      }
+    }
+    let fn = vi.spyOn(fnOb,'count')
+
+    effect(() => {
+      fnOb.count(obj.age)
+    }, {
+      scheduler(fn) {
+        jobQueue.add(fn)
+        flushJob()
+      }
+    })
+    
+    obj.age++
+    obj.age++
+    obj.age++
+
+    expect(fn).toHaveBeenCalledTimes(1)
+    expect(fn).toHaveBeenCalledWith(1)
+    await vi.runAllTicks() // vue的微任务优化
+    expect(fn).toHaveBeenCalledTimes(2)
+    expect(fn).toHaveBeenCalledWith(4)
+  })
+
 })
