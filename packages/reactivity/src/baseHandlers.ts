@@ -24,8 +24,8 @@ function createGetter(shallow: boolean) {
       // 已经存在缓存里
       return target
     }
-
-    const res = Reflect.get(target, key, receiver)
+    const res = target[key]
+    // const res = Reflect.get(target, key, receiver)
     track(target, 'get', key)
 
     if (isObject(res)) {
@@ -41,6 +41,7 @@ function createGetter(shallow: boolean) {
 function createSetter() {
   return function set(target, key, value, receiver) {
     const result = Reflect.set(target, key, value, receiver)
+    // const result = Reflect.set(target, key, value, receiver)
     // 在触发 set 的时候进行触发依赖
     trigger(target, 'set', key)
     return result

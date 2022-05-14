@@ -30,5 +30,18 @@ describe('测试响应式', () => {
     // getter
     expect(observed.bar.name).toBe('dasheng')
   })
+  it('为啥用WeakMap',()=>{
+    const map = new Map()
+    const weakmap = new WeakMap()
+    //立即执行
+    ~(function(){
+      const foo = { name:'dasheng' }
+      const bar = { name:'xiaosheng' }
+      map.set(foo,'1')
+      weakmap.set(bar,'xiaosheng')
+    }())
+    expect(map.size).toEqual(1) 
+    //weakmap会被回收
+  })
 })
 
