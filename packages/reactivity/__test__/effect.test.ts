@@ -208,7 +208,7 @@ describe('测试effect', () => {
     }
     let fnOb = {
       count(n){
-        console.log(n)
+        // console.log(n)
         return n
       }
     }

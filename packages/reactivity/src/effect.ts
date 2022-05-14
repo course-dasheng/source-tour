@@ -8,7 +8,7 @@ interface EffectOption{
   lazy?:boolean,
   scheduler?:(any)=>void
 }
-type effectFnType = typeof effect
+// type effectFnType = typeof effect
 export function effect(fn, options:EffectOption = {}) {
   // effect嵌套，通过队列管理
   const effectFn = () => {
@@ -17,15 +17,16 @@ export function effect(fn, options:EffectOption = {}) {
     // 在调用副作用函数之前将当前副作用函数压栈
     effectStack.push(effectFn)
     // fn执行的时候，内部读取响应式数据的时候，就能在get配置里读取到activeEffect
-    fn()
+    let res = fn()
     effectStack.pop()
     activeEffect = effectStack[effectStack.length - 1]
+    return res
   }
   effectFn.deps = [] // 收集依赖
-  // if (!options.lazy) {
+  if (!options.lazy) {
     // 没有配置lazy 直接执行
-  effectFn()
-  // }
+    effectFn()
+  }
   effectFn.options = options // 调度时机 watchEffect回用到
   return effectFn
 }
@@ -86,12 +87,9 @@ export function trigger(target, type, key) {
   })
   depsToRun.forEach((effectFn) => {
     // 调度器
-    // @ts-ignore
     if (effectFn.options.scheduler){
-    // @ts-ignore
       effectFn.options.scheduler(effectFn)
     }else{
-    // @ts-ignore
       effectFn()
     }
   })
