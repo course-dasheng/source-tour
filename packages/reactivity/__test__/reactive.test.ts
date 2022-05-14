@@ -1,7 +1,10 @@
-import { describe, expect, it, test } from 'vitest'
-import { isReactive, reactive, shallowReactive } from '../src'
+import { beforeAll, beforeEach, describe, expect, it, test, vi } from 'vitest'
+import { effect, isReactive, reactive, shallowReactive } from '../src'
 
 describe('测试响应式', () => {
+  beforeEach(()=>{
+    vi.useFakeTimers()
+  })
   it('响应式对象', () => {
     const original = { foo: 1, bar: { name: '大圣' } }
     const observed = reactive(original)
@@ -42,6 +45,24 @@ describe('测试响应式', () => {
     }())
     expect(map.size).toEqual(1) 
     //weakmap会被回收
+  })
+  it('为啥用Reflect',async ()=>{
+
+    const obj = {
+      _age: 1,
+      get age() {
+        return this._age
+      }
+    }
+    let p = reactive(obj)
+    let fn = vi.fn((arg)=>{})
+    effect(()=>{
+      fn(p.age)
+    })
+    expect(fn).toHaveBeenCalledTimes(1)
+    p._age++
+    expect(fn).toHaveBeenCalledTimes(2) //不用Reflect不生效
+
   })
 })
 

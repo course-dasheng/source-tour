@@ -190,8 +190,6 @@ describe('测试effect', () => {
     const data = { age: 1}
     // 对原始数据的代理
     const obj = reactive(data)
-  
-
     const jobQueue = new Set()
     // 微任务队列
     const p = Promise.resolve()

@@ -24,8 +24,9 @@ function createGetter(shallow: boolean) {
       // 已经存在缓存里
       return target
     }
-    const res = target[key]
-    // const res = Reflect.get(target, key, receiver)
+    // const res = target[key]
+    // receiver有点像代理的this
+    const res = Reflect.get(target, key, receiver)
     track(target, 'get', key)
 
     if (isObject(res)) {
