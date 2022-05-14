@@ -3,7 +3,11 @@ let activeEffect = null
 // let effectStack = []
 const targetMap = new WeakMap()
 
-export function effect(fn, options = {}) {
+interface EffectOption{
+  lazy?:boolean,
+  scheduler?:()=>void
+}
+export function effect(fn, options:EffectOption = {}) {
   // effect嵌套，通过队列管理
   const effectFn = () => {
     try {
@@ -15,11 +19,11 @@ export function effect(fn, options = {}) {
       activeEffect = null
     }
   }
-  if (!options.lazy) {
+  // if (!options.lazy) {
     // 没有配置lazy 直接执行
     effectFn()
-  }
-  effectFn.scheduler = options.scheduler // 调度时机 watchEffect回用到
+  // }
+  // effectFn.scheduler = options.scheduler // 调度时机 watchEffect回用到
   return effectFn
 }
 
@@ -64,9 +68,10 @@ export function trigger(target, type, key) {
     return
 
   deps.forEach((effectFn) => {
-    if (effectFn.scheduler)
-      effectFn.scheduler()
-    else
+    // if (effectFn.scheduler){
+    //   effectFn.scheduler()
+    // }else{
       effectFn()
+    // }
   })
 }

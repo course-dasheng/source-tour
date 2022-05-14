@@ -54,8 +54,9 @@ function has(target, key) {
 function deleteProperty(target, key) {
   const hadKey = hasOwn(target, key)
   const result = Reflect.deleteProperty(target, key)
-  if (result && hadKey)
+  if (result && hadKey){
     trigger(target, 'delete', key)
+  }
 
   return result
 }
