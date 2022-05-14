@@ -20,3 +20,15 @@
    4. 准备好你的github
    5. 使用js or ts（esno，tsup)
       1. 先从vue的响应式 和脚手架框架开始
+
+```
+packages
+   - reactivity 响应式
+   - utils 工具库
+   - demo-intro
+      - jquery.js mini jquery + jsonp
+      - template.html 模板引擎
+```
+
+## 学员作品
+* [学员网名](作品链接)
