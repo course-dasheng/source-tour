@@ -48,12 +48,31 @@ function createSetter() {
     return result
   }
 }
+function has(target, key) {
+  const res = Reflect.has(target, key)
+  track(target, 'has', key)
+  return res
+}
+function deleteProperty(target, key) {
+  const hadKey = hasOwn(target, key)
+  const result = Reflect.deleteProperty(target, key)
+  console.log(1,result,hadKey)
+  if (result && hadKey){
+    trigger(target, 'delete', key)
+  }
+  return result
+}
+
 export const mutableHandlers = {
   get,
   set,
+  has,
+  deleteProperty,
 }
 
 export const shallowReactiveHandlers = {
   get: shallowReactiveGet,
   set,
+  has,
+  deleteProperty,
 }

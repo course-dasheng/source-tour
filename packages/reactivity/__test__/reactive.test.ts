@@ -64,5 +64,27 @@ describe('测试响应式', () => {
     expect(fn).toHaveBeenCalledTimes(2) //不用Reflect不生效
 
   })
+  it('删除属性',()=>{
+    const data = { name:'大圣',age:18 }
+    const obj =reactive(data)
+    let deleteFn = vi.fn((arg)=>{})
+    let hasFn = vi.fn((arg)=>{})
+    effect(()=>{
+      for (const key in obj) {
+        hasFn(key)
+      }
+      deleteFn(obj.name)
+    })
+    expect(hasFn).toHaveBeenCalledTimes(2)
+    expect(deleteFn).toHaveBeenCalledTimes(1)
+    delete obj.name
+    expect(deleteFn).toHaveBeenCalledTimes(2)
+    expect(hasFn).toHaveBeenCalledTimes(3) //删了一个
+    delete obj.age
+    expect(hasFn).toHaveBeenCalledTimes(3) //删没了
+
+
+  })
+  
 })
 
