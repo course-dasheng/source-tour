@@ -63,6 +63,8 @@ function deleteProperty(target, key) {
   return result
 }
 
+// @next ownKeys
+
 export const mutableHandlers = {
   get,
   set,
