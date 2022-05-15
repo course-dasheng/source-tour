@@ -4,7 +4,6 @@ import {
 } from './baseHandlers'
 import {
   collectionHandlers,
-  shallowCollectionHandlers,
 } from './collectionHandlers'
 import {toRawType} from '@shengxj/utils'
 export const reactiveMap = new WeakMap()

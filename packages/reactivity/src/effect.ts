@@ -17,7 +17,6 @@ interface EffectOption{
   immediate?:boolean,
   scheduler?:(any)=>void
 }
-// type effectFnType = typeof effect
 export function effect(fn, options:EffectOption = {}) {
   // effect嵌套，通过队列管理
   const effectFn = () => {
@@ -39,6 +38,8 @@ export function effect(fn, options:EffectOption = {}) {
   effectFn.options = options // 调度时机 watchEffect回用到
   return effectFn
 }
+type effectFnType = ReturnType<typeof effect>
+
 function cleanup(effectFn){
   for(let i=0;i<effectFn.deps.length;i++){
     effectFn.deps[i].delete(effectFn)
@@ -76,7 +77,7 @@ export function track(target, type, key) {
   }
   depsMap.set(key, deps)
 }
-export function trigger(target, type, key,value) {
+export function trigger(target, type, key,value='') {
   // console.log(`触发 trigger -> target:  type:${type} key:${key}`)
   // 从targetMap中找到触发的函数，执行他
   const depsMap = targetMap.get(target)
@@ -88,7 +89,8 @@ export function trigger(target, type, key,value) {
   const deps = depsMap.get(key)
 
   // set forEach里delete和add会死循环 ，新建一个set
-  const depsToRun = new Set()
+  let defFns:effectFnType[] = []
+  const depsToRun = new Set(defFns)
   deps && deps.forEach(effectFn=>{
     if(effectFn !==activeEffect){
       depsToRun.add(effectFn) // 过滤掉一个effct同时get和set的情况

@@ -1,4 +1,4 @@
-import {  ReactiveFlags, } from './reactive'
+import {  ReactiveFlags,reactive } from './reactive'
 import { track, trigger  } from './effect'
 import {ITERATE_KEY} from  './baseHandlers'
 import {  hasOwn, toRawType  } from '@shengxj/utils'
@@ -36,7 +36,37 @@ const mutableInstrumentations = {
     const res = target.has(key)
     track(target, 'col-has', key)
     return res
+  },
+  set(key,value){
+    const target = this[ReactiveFlags.RAW]
+    const had = target.has(key)
+
+    const oldValue = target.get(key)
+    const rawValue = value.raw || value
+    target.set(key, rawValue)
+
+    if (!had) {
+      trigger(target,'add', key)
+    } else if (oldValue !== value || (oldValue === oldValue && value === value)) {
+      trigger(target, 'set',key)
+    }
+  },
+  get(key){
+    const target = this[ReactiveFlags.RAW]
+    const had = target.has(key)
+
+    track(target, 'map-get',key)
+
+    if (had) {
+      const res = target.get(key)
+      return typeof res === 'object' ? reactive(res) : res
+    }
   }
+  //forEach
+  // [Symbol.iterator]: iterationMethod,
+  // entries: iterationMethod,
+  // keys: keysIterationMethod,
+  // values: valuesIterationMethod,
 }
 
 // export const shallowCollectionHandlers = {
