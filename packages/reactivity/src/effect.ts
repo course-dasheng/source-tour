@@ -122,7 +122,6 @@ export function trigger(target, type, key,value) {
     })
   }
 
-
   depsToRun.forEach((effectFn) => {
     // 调度器
     if (effectFn.options.scheduler){

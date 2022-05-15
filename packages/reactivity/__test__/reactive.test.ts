@@ -159,8 +159,38 @@ describe('测试响应式', () => {
     arr.length = 1 //触发修改
     expect(fn).toHaveBeenCalledTimes(1)
     expect(fn1).toHaveBeenCalledTimes(2)
+    expect(fn1).toHaveBeenLastCalledWith(undefined)
   })
 
-  
+  it('数组的遍历',()=>{
+    let arr = reactive([1,2])
+    let fn = vi.fn((arg1)=>{})
+    let ret = []
+    effect(()=>{
+      for(const key in arr){
+        ret.push(key)
+      }
+    })
+    expect(ret.join(',')).toEqual('0,1')
+    arr.length = 1
+    expect(ret.join(',')).toEqual('0,1,0')
+  })
+  it('数组的查询方法',()=>{
+    let arr = reactive([1,2])
+    let bool 
+    effect(()=>{
+      bool = arr.includes(1)
+    })
+    expect(bool).toBe(true)
+
+    let obj = {}
+    let arr1 = reactive([obj])
+    let bool1
+    effect(()=>{
+      bool1 = arr1.includes(obj) //对象
+    })
+    expect(bool1).toBe(true)
+
+  })
 })
 

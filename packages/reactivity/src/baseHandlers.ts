@@ -10,6 +10,24 @@ const get = createGetter(false)
 const set = createSetter()
 const shallowReactiveGet = createGetter(true)
 
+
+const arrayInstrumentations = {}
+
+;['includes', 'indexOf', 'lastIndexOf'].forEach(method => {
+  const originMethod = Array.prototype[method]
+  arrayInstrumentations[method] = function(...args) {
+    // this 是代理对象，先在代理对象中查找，将结果存储到 res 中
+    let res = originMethod.apply(this, args)
+    if (res === false) {
+      // res 为 false 说明没找到，在通过 this.raw 拿到原始数组，再去原始数组中查找，并更新 res 值
+      res = originMethod.apply(this[ReactiveFlags.RAW], args)
+    }
+    // 返回最终的结果
+    return res
+  }
+})
+
+
 function createGetter(shallow: boolean) {
   return function get(target: object, key: string, receiver) {
     // 是不是已经存在两个map中，实际还会更多 还有readonly啥乱遭的
@@ -24,6 +42,12 @@ function createGetter(shallow: boolean) {
       // 已经存在缓存里
       return target
     }
+
+    if (Array.isArray(target) && arrayInstrumentations.hasOwnProperty(key)) {
+      return Reflect.get(arrayInstrumentations, key, receiver)
+    }
+
+
     // const res = target[key]
     // receiver有点像代理的this
     const res = Reflect.get(target, key, receiver)
@@ -75,7 +99,8 @@ export const ITERATE_KEY = Symbol('iterate')
 // - Object.keys()
 // - for…in循环
 function ownKeys(target) {
-  track(target, 'ownKeys',ITERATE_KEY)
+  let key = Array.isArray(target) ?'length':ITERATE_KEY
+  track(target, 'ownKeys',key)
   return Reflect.ownKeys(target)
 }
 
