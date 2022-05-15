@@ -1,16 +1,16 @@
 {
   "name": "@shengxj/reactivity",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
     "test": "vitest",
     "build": "unbuild",
-    "lint":"eslint src --fix"
+    "lint": "eslint src --fix"
   },
   "author": "",
-  "dependencies":{
-    "@shengxj/utils":"^0.0.4"
+  "dependencies": {
+    "@shengxj/utils": "^0.0.4"
   },
   "license": "MIT",
   "publishConfig": {
