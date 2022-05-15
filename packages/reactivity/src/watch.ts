@@ -10,8 +10,12 @@ function traverse(value, seen = new Set()) {
   }
   return value
 }
-
-export function watch(source, cb, options = {}) {
+interface watchOptions{
+  deep?:boolean,
+  immediate?:boolean,
+  flush?:'post'|'sync'|'pre'
+}
+export function watch(source, cb, options:watchOptions = {}) {
   let getter
   if (typeof source === 'function') {
     getter = source

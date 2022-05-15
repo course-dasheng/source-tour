@@ -89,8 +89,7 @@ export function trigger(target, type, key,value='') {
   const deps = depsMap.get(key)
 
   // set forEach里delete和add会死循环 ，新建一个set
-  let defFns:effectFnType[] = []
-  const depsToRun = new Set(defFns)
+  const depsToRun = new Set<effectFnType>([])
   deps && deps.forEach(effectFn=>{
     if(effectFn !==activeEffect){
       depsToRun.add(effectFn) // 过滤掉一个effct同时get和set的情况

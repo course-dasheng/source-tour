@@ -16,6 +16,8 @@ export function isRef(val) {
 
 
 class RefImpl {
+  __isRef:boolean
+  _val:any
   constructor(val) {
     this.__isRef = true
     this._val = convert(val)

@@ -1,5 +1,5 @@
 {
-  "name": "@shengxi/reactivity",
+  "name": "@shengxj/reactivity",
   "version": "0.0.1",
   "description": "",
   "main": "src/index.ts",
@@ -10,7 +10,11 @@
   },
   "author": "",
   "dependencies":{
-    "@shengxj/utils":"workspace:^0.0.1"
+    "@shengxj/utils":"^0.0.4"
   },
-  "license": "ISC"
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }
