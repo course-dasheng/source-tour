@@ -79,7 +79,6 @@ export function track(target, type, key) {
 export function trigger(target, type, key,value) {
   // console.log(`触发 trigger -> target:  type:${type} key:${key}`)
   // 从targetMap中找到触发的函数，执行他
-
   const depsMap = targetMap.get(target)
   if (!depsMap) {
     // 没找到依赖

@@ -2,7 +2,11 @@ import {
   mutableHandlers,
   shallowReactiveHandlers,
 } from './baseHandlers'
-
+import {
+  collectionHandlers,
+  shallowCollectionHandlers,
+} from './collectionHandlers'
+import {toRawType} from '@shengxj/utils'
 export const reactiveMap = new WeakMap()
 export const shallowReactiveMap = new WeakMap()
 
@@ -12,9 +16,12 @@ export const ReactiveFlags = {
 }
 
 export function reactive(target) {
-  return createReactiveObject(target, reactiveMap, mutableHandlers)
+  let handers = getTargetType(target) === TargetType.COMMON ? mutableHandlers: collectionHandlers
+  return createReactiveObject(target, reactiveMap, handers)
 }
 export function shallowReactive(target) {
+  // let handers = getTargetType(target) === TargetType.COMMON ? shallowReactiveHandlers: shallowCollectionHandlers
+  // @todo
   return createReactiveObject(
     target,
     shallowReactiveMap,
@@ -25,6 +32,31 @@ export function shallowReactive(target) {
 export function isReactive(value) {
   // 判断是不是有__isReactive属性
   return !!value[ReactiveFlags.IS_REACTIVE]
+}
+
+const enum TargetType {
+  INVALID = 0,
+  COMMON = 1,
+  COLLECTION = 2
+}
+
+function targetTypeMap(rawType: string) {
+  switch (rawType) {
+    case 'Object':
+    case 'Array':
+      return TargetType.COMMON
+    case 'Map':
+    case 'Set':
+    case 'WeakMap':
+    case 'WeakSet':
+      return TargetType.COLLECTION
+    default:
+      return TargetType.INVALID
+  }
+}
+
+function getTargetType(value) {
+  return targetTypeMap(toRawType(value))
 }
 
 function createReactiveObject(target, proxyMap, proxyHandlers) {
