@@ -109,6 +109,15 @@ describe('测试响应式', () => {
     // expect(forFn).toHaveBeenCalledWith(false)
     // expect(forFn).toHaveBeenCalledTimes(4)
   })
-  
+  it('数据不变不触发更新',()=>{
+    let obj =reactive({ age:1})
+    let fn = vi.fn((arg1)=>{})
+    effect(()=>{
+      fn(obj.name)
+    })
+    obj.age = 1 //没变
+    expect(fn).toHaveBeenCalledTimes(1)
+  })
+
 })
 
