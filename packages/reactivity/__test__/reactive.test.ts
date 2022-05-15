@@ -192,5 +192,16 @@ describe('测试响应式', () => {
     expect(bool1).toBe(true)
 
   })
+
+  it('数组的修改方法',()=>{
+    let arr = reactive([])
+    effect(()=>{
+      arr.push(1)
+    })
+    effect(() => {
+      arr.push(2)
+    })
+    expect(arr.join(',')).toEqual('1,2')
+  })
 })
 

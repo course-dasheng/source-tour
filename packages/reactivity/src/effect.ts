@@ -1,6 +1,13 @@
 import {ITERATE_KEY} from './baseHandlers'
 let activeEffect = null
-// let shouldTrack = false
+export let shouldTrack = true
+export function stopTrack(){
+  shouldTrack = false
+}
+export function startTrack(){
+  shouldTrack = true
+
+}
 // effect嵌套的时候，内层的activeEffect会覆盖外层的activeEffect，用栈管理，支持嵌套
 let effectStack = []
 const targetMap = new WeakMap()
@@ -39,7 +46,7 @@ function cleanup(effectFn){
   effectFn.deps.length =0
 }
 export function track(target, type, key) {
-  if(!activeEffect) return 
+  if(!activeEffect || !shouldTrack) return 
   // console.log(`触发 track -> target: ${target} type:${type} key:${key}`)
 
   // 1. 先基于 target 找到对应的 dep

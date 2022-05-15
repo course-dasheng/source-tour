@@ -1,5 +1,5 @@
 import { hasOwn, isObject } from '@shengxj/utils'
-import { track, trigger } from './effect'
+import { track, trigger,startTrack,stopTrack } from './effect'
 import {
   ReactiveFlags,
   reactive,
@@ -26,7 +26,15 @@ const arrayInstrumentations = {}
     return res
   }
 })
-
+;['push','pop','shift','unshift'].forEach(method => {
+  const originMethod = Array.prototype[method]
+  arrayInstrumentations[method] = function(...args) {
+    stopTrack()
+    let res = originMethod.apply(this, args)
+    startTrack()
+    return res
+  }
+})
 
 function createGetter(shallow: boolean) {
   return function get(target: object, key: string, receiver) {
