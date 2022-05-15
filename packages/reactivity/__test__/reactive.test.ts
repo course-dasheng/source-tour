@@ -118,6 +118,49 @@ describe('测试响应式', () => {
     obj.age = 1 //没变
     expect(fn).toHaveBeenCalledTimes(1)
   })
+  it('测试数组响应式',()=>{
+    let arr = reactive(['大圣'])
+    let fn = vi.fn((arg1)=>{})
+    effect(()=>{
+      fn(arr[0])
+    })
+    arr[0] = 1
+    expect(fn).toHaveBeenCalledTimes(2) //自动就有这个功能，数组本质也是对象
+  })
+  //数组的常见读操作
+  // arr[0], arr.length, for in ,for of
+  // concat,join,every,find,some,等方法
+  // 数组常见写操作
+  // arr[0] =1 ,arr.length = 0
+  // push,pop,shift,unshift,splice,sort,reverse,fill
+  it('数组越界修改length',()=>{
+    let arr = reactive(['大圣'])
+    let fn = vi.fn((arg1)=>{})
+    effect(()=>{
+      fn(arr.length)
+    })
+    arr[1] = 2 // 越界没检测到 本质上其实修改了length
+    // expect(fn).toHaveBeenCalledWith(1) 
+    expect(fn).toHaveBeenCalledTimes(2) 
+  })
+  it('数组修改length更新数组',()=>{
+    let arr = reactive(['大圣','小圣'])
+    let fn = vi.fn((arg1)=>{})
+    let fn1 = vi.fn((arg1)=>{})
+    effect(()=>{
+      fn(arr[0])
+    })
+    effect(()=>{
+      fn1(arr[1])
+    })
+    expect(fn).toHaveBeenCalledWith('大圣')
+    expect(fn1).toHaveBeenCalledWith('小圣')
 
+    arr.length = 1 //触发修改
+    expect(fn).toHaveBeenCalledTimes(1)
+    expect(fn1).toHaveBeenCalledTimes(2)
+  })
+
+  
 })
 

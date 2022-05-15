@@ -42,13 +42,16 @@ function createGetter(shallow: boolean) {
 function createSetter() {
   return function set(target, key, value, receiver) {
     let oldValue = target[key]
-    const type = target.hasOwnProperty(key) ? 'set' : 'add'
+
+    const type = Array.isArray(target) 
+                  ?Number(key)<target.length ?'set':'add' //越界标记为add
+                  :target.hasOwnProperty(key) ? 'set' : 'add'
     const result = Reflect.set(target, key, value, receiver)
     // const result = Reflect.set(target, key, value, receiver)
     // 在触发 set 的时候进行触发依赖
     if(oldValue !== value ) { 
-      // @todo 考虑nan的情况
-      trigger(target, type, key)
+      // @todo 考虑NaN的情况
+      trigger(target, type, key,value)
     }
     return result
   }

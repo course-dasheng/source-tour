@@ -69,7 +69,7 @@ export function track(target, type, key) {
   }
   depsMap.set(key, deps)
 }
-export function trigger(target, type, key) {
+export function trigger(target, type, key,value) {
   // console.log(`触发 trigger -> target:  type:${type} key:${key}`)
   // 从targetMap中找到触发的函数，执行他
 
@@ -100,6 +100,28 @@ export function trigger(target, type, key) {
     })
 
   }
+  if(type==='add' && Array.isArray(target)){
+    const lengthEffects = depsMap.get('length')
+    lengthEffects && lengthEffects.forEach(effectFn => {
+      if (effectFn !== activeEffect) {
+        depsToRun.add(effectFn)
+      }
+    })
+  }
+
+  //修改数组的时候，只需要更新比value长的数据，
+  if (Array.isArray(target) && key === 'length') {
+    depsMap.forEach((effects, key) => {
+      if (key >= value) {
+        effects.forEach(effectFn => {
+          if (effectFn !== activeEffect) {
+            depsToRun.add(effectFn)
+          }
+        })
+      }
+    })
+  }
+
 
   depsToRun.forEach((effectFn) => {
     // 调度器
