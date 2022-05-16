@@ -1,23 +1,22 @@
-import {ITERATE_KEY} from './baseHandlers'
+import { ITERATE_KEY } from './baseHandlers'
 let activeEffect = null
-export let shouldTrack = true
-export function stopTrack(){
+let shouldTrack = true
+export function stopTrack() {
   shouldTrack = false
 }
-export function startTrack(){
+export function startTrack() {
   shouldTrack = true
-
 }
 // effect嵌套的时候，内层的activeEffect会覆盖外层的activeEffect，用栈管理，支持嵌套
-let effectStack = []
+const effectStack = []
 const targetMap = new WeakMap()
 
-interface EffectOption{
-  lazy?:boolean,
-  immediate?:boolean,
-  scheduler?:(any)=>void
+interface EffectOption {
+  lazy?: boolean
+  immediate?: boolean
+  scheduler?: (any) => void
 }
-export function effect(fn, options:EffectOption = {}) {
+export function effect(fn, options: EffectOption = {}) {
   // effect嵌套，通过队列管理
   const effectFn = () => {
     cleanup(effectFn)
@@ -25,7 +24,7 @@ export function effect(fn, options:EffectOption = {}) {
     // 在调用副作用函数之前将当前副作用函数压栈
     effectStack.push(effectFn)
     // fn执行的时候，内部读取响应式数据的时候，就能在get配置里读取到activeEffect
-    let res = fn()
+    const res = fn()
     effectStack.pop()
     activeEffect = effectStack[effectStack.length - 1]
     return res
@@ -40,14 +39,14 @@ export function effect(fn, options:EffectOption = {}) {
 }
 type effectFnType = ReturnType<typeof effect>
 
-function cleanup(effectFn){
-  for(let i=0;i<effectFn.deps.length;i++){
-    effectFn.deps[i].delete(effectFn)
-  }
-  effectFn.deps.length =0
+function cleanup(effectFn) {
+  for (let i = 0; i < effectFn.deps.length; i++) effectFn.deps[i].delete(effectFn)
+
+  effectFn.deps.length = 0
 }
 export function track(target, type, key) {
-  if(!activeEffect || !shouldTrack) return 
+  if (!activeEffect || !shouldTrack)
+    return
   // console.log(`触发 track -> target: ${target} type:${type} key:${key}`)
 
   // 1. 先基于 target 找到对应的 dep
@@ -66,9 +65,8 @@ export function track(target, type, key) {
     targetMap.set(target, (depsMap = new Map()))
   }
   let deps = depsMap.get(key)
-  if (!deps){
+  if (!deps)
     deps = new Set()
-  }
 
   if (!deps.has(activeEffect) && activeEffect) {
     // 防止重复注册
@@ -77,7 +75,7 @@ export function track(target, type, key) {
   }
   depsMap.set(key, deps)
 }
-export function trigger(target, type, key,value='') {
+export function trigger(target, type, key, value = '') {
   // console.log(`触发 trigger -> target:  type:${type} key:${key}`)
   // 从targetMap中找到触发的函数，执行他
   const depsMap = targetMap.get(target)
@@ -90,40 +88,34 @@ export function trigger(target, type, key,value='') {
 
   // set forEach里delete和add会死循环 ，新建一个set
   const depsToRun = new Set<effectFnType>([])
-  deps && deps.forEach(effectFn=>{
-    if(effectFn !==activeEffect){
+  deps && deps.forEach((effectFn) => {
+    if (effectFn !== activeEffect)
       depsToRun.add(effectFn) // 过滤掉一个effct同时get和set的情况
-    }
   })
 
-  if(type=='add'||type=="delete"){
-
+  if (type === 'add' || type === 'delete') {
     const itrateDeps = depsMap.get(ITERATE_KEY)
-      // console.log('xx',itrateDeps)
-    itrateDeps && itrateDeps.forEach(effectFn => {
-      if (effectFn !== activeEffect) {
+    // console.log('xx',itrateDeps)
+    itrateDeps && itrateDeps.forEach((effectFn) => {
+      if (effectFn !== activeEffect)
         depsToRun.add(effectFn)
-      }
     })
-
   }
-  if(type==='add' && Array.isArray(target)){
+  if (type === 'add' && Array.isArray(target)) {
     const lengthEffects = depsMap.get('length')
-    lengthEffects && lengthEffects.forEach(effectFn => {
-      if (effectFn !== activeEffect) {
+    lengthEffects && lengthEffects.forEach((effectFn) => {
+      if (effectFn !== activeEffect)
         depsToRun.add(effectFn)
-      }
     })
   }
 
-  //修改数组的时候，只需要更新比value长的数据，
+  // 修改数组的时候，只需要更新比value长的数据，
   if (Array.isArray(target) && key === 'length') {
     depsMap.forEach((effects, key) => {
       if (key >= value) {
-        effects.forEach(effectFn => {
-          if (effectFn !== activeEffect) {
+        effects.forEach((effectFn) => {
+          if (effectFn !== activeEffect)
             depsToRun.add(effectFn)
-          }
         })
       }
     })
@@ -131,10 +123,9 @@ export function trigger(target, type, key,value='') {
 
   depsToRun.forEach((effectFn) => {
     // 调度器
-    if (effectFn.options.scheduler){
+    if (effectFn.options.scheduler)
       effectFn.options.scheduler(effectFn)
-    }else{
-      effectFn()
-    }
+
+    else effectFn()
   })
 }

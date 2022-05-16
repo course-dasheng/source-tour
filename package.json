@@ -9,7 +9,8 @@
     "test": "pnpm run test:vue",
     "build:utils": "pnpm run --filter @shengxj/utils build",
     "build:reactivity": "pnpm run --filter @shengxj/reactivity build",
-    "build": "pnpm run  --filter=\"@shengxj/*\" build "
+    "build": "pnpm run  --filter=\"@shengxj/*\" build ",
+    "lint": "eslint packages/**/src --fix"
   },
   "repository": {
     "type": "git",

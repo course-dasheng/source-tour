@@ -1,5 +1,5 @@
 import { hasOwn, isObject } from '@shengxj/utils'
-import { track, trigger,startTrack,stopTrack } from './effect'
+import { startTrack, stopTrack, track, trigger } from './effect'
 import {
   ReactiveFlags,
   reactive,
@@ -10,12 +10,11 @@ const get = createGetter(false)
 const set = createSetter()
 const shallowReactiveGet = createGetter(true)
 
-
 const arrayInstrumentations = {}
 
-;['includes', 'indexOf', 'lastIndexOf'].forEach(method => {
+;['includes', 'indexOf', 'lastIndexOf'].forEach((method) => {
   const originMethod = Array.prototype[method]
-  arrayInstrumentations[method] = function(...args) {
+  arrayInstrumentations[method] = function (...args) {
     // this 是代理对象，先在代理对象中查找，将结果存储到 res 中
     let res = originMethod.apply(this, args)
     if (res === false) {
@@ -26,11 +25,11 @@ const arrayInstrumentations = {}
     return res
   }
 })
-;['push','pop','shift','unshift'].forEach(method => {
+;['push', 'pop', 'shift', 'unshift'].forEach((method) => {
   const originMethod = Array.prototype[method]
-  arrayInstrumentations[method] = function(...args) {
+  arrayInstrumentations[method] = function (...args) {
     stopTrack()
-    let res = originMethod.apply(this, args)
+    const res = originMethod.apply(this, args)
     startTrack()
     return res
   }
@@ -51,10 +50,8 @@ function createGetter(shallow: boolean) {
       return target
     }
 
-    if (Array.isArray(target) && arrayInstrumentations.hasOwnProperty(key)) {
+    if (Array.isArray(target) && hasOwn(arrayInstrumentations, key))
       return Reflect.get(arrayInstrumentations, key, receiver)
-    }
-
 
     // const res = target[key]
     // receiver有点像代理的this
@@ -73,17 +70,17 @@ function createGetter(shallow: boolean) {
 
 function createSetter() {
   return function set(target, key, value, receiver) {
-    let oldValue = target[key]
+    const oldValue = target[key]
 
-    const type = Array.isArray(target) 
-                  ?Number(key)<target.length ?'set':'add' //越界标记为add
-                  :target.hasOwnProperty(key) ? 'set' : 'add'
+    const type = Array.isArray(target)
+      ? Number(key) < target.length ? 'set' : 'add' // 越界标记为add
+      : hasOwn(target, key) ? 'set' : 'add'
     const result = Reflect.set(target, key, value, receiver)
     // const result = Reflect.set(target, key, value, receiver)
     // 在触发 set 的时候进行触发依赖
-    if(oldValue !== value ) { 
+    if (oldValue !== value) {
       // @todo 考虑NaN的情况
-      trigger(target, type, key,value)
+      trigger(target, type, key, value)
     }
     return result
   }
@@ -96,9 +93,9 @@ function has(target, key) {
 function deleteProperty(target, key) {
   const hadKey = hasOwn(target, key)
   const result = Reflect.deleteProperty(target, key)
-  if (result && hadKey){
+  if (result && hadKey)
     trigger(target, 'delete', key)
-  }
+
   return result
 }
 export const ITERATE_KEY = Symbol('iterate')
@@ -107,8 +104,8 @@ export const ITERATE_KEY = Symbol('iterate')
 // - Object.keys()
 // - for…in循环
 function ownKeys(target) {
-  let key = Array.isArray(target) ?'length':ITERATE_KEY
-  track(target, 'ownKeys',key)
+  const key = Array.isArray(target) ? 'length' : ITERATE_KEY
+  track(target, 'ownKeys', key)
   return Reflect.ownKeys(target)
 }
 
