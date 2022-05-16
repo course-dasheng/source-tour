@@ -1,6 +1,6 @@
 {
   "name": "@shengxj/reactivity",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
