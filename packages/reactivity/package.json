@@ -10,7 +10,7 @@
   },
   "author": "",
   "dependencies": {
-    "@shengxj/utils": "^0.0.4"
+    "@shengxj/utils": "workspace:*"
   },
   "license": "MIT",
   "publishConfig": {
