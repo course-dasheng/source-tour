@@ -1,12 +1,13 @@
 {
   "name": "@shengxj/reactivity",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
     "test": "vitest",
     "build": "unbuild",
-    "lint": "eslint src --fix"
+    "lint": "eslint src --fix",
+    "release": "npx bumpp --commit --push --tag"
   },
   "author": "",
   "dependencies": {
