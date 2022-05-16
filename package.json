@@ -6,7 +6,7 @@
   "scripts": {
     "publish": "changeset publish",
     "test:vue": "vitest packages/reactivity",
-    "test": "pnpm run test:vue",
+    "test": "vitest packages/",
     "build:utils": "pnpm run --filter @shengxj/utils build",
     "build:reactivity": "pnpm run --filter @shengxj/reactivity build",
     "build": "pnpm run  --filter=\"@shengxj/*\" build ",

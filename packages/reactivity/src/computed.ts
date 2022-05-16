@@ -1,6 +1,9 @@
 import { effect, track, trigger } from './effect'
-export function computed(getter) {
-  let value
+
+export type ComputedGetter<T> = (...args: any[]) => T
+
+export function computed<T>(getter: ComputedGetter<T>) {
+  let value: T
   let dirty = true // 防止重复计算
 
   const effectFn = effect(getter, {

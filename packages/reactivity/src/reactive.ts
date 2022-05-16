@@ -20,11 +20,11 @@ const enum TargetType {
   COLLECTION = 2,
 }
 
-export function reactive(target) {
+export function reactive(target: object) {
   const handers = getTargetType(target) === TargetType.COMMON ? mutableHandlers : collectionHandlers
   return createReactiveObject(target, reactiveMap, handers)
 }
-export function shallowReactive(target) {
+export function shallowReactive(target: object) {
   // let handers = getTargetType(target) === TargetType.COMMON ? shallowReactiveHandlers: shallowCollectionHandlers
   // @todo
   return createReactiveObject(
@@ -34,7 +34,7 @@ export function shallowReactive(target) {
   )
 }
 
-export function isReactive(value) {
+export function isReactive(value: object) {
   // 判断是不是有__isReactive属性
   return !!value[ReactiveFlags.IS_REACTIVE]
 }
@@ -54,11 +54,11 @@ function targetTypeMap(rawType: string) {
   }
 }
 
-function getTargetType(value) {
+function getTargetType(value: any) {
   return targetTypeMap(toRawType(value))
 }
 
-function createReactiveObject(target, proxyMap, proxyHandlers) {
+function createReactiveObject(target: object, proxyMap, proxyHandlers) {
   if (typeof target !== 'object') {
     console.warn(`reactive  ${target} 必须是一个对象`)
     return target

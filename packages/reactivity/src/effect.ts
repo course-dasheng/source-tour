@@ -1,5 +1,5 @@
 import { ITERATE_KEY } from './baseHandlers'
-let activeEffect = null
+let activeEffect: effectFnType | undefined
 let shouldTrack = true
 export function stopTrack() {
   shouldTrack = false
@@ -8,15 +8,18 @@ export function startTrack() {
   shouldTrack = true
 }
 // effect嵌套的时候，内层的activeEffect会覆盖外层的activeEffect，用栈管理，支持嵌套
-const effectStack = []
+const effectStack: any[] = []
 const targetMap = new WeakMap()
 
 interface EffectOption {
   lazy?: boolean
   immediate?: boolean
-  scheduler?: (any) => void
+  scheduler?: (...args: any[]) => void
 }
-export function effect(fn, options: EffectOption = {}) {
+export function effect<T>(
+  fn: () => T,
+  options: EffectOption = {},
+) {
   // effect嵌套，通过队列管理
   const effectFn = () => {
     cleanup(effectFn)
@@ -39,7 +42,7 @@ export function effect(fn, options: EffectOption = {}) {
 }
 type effectFnType = ReturnType<typeof effect>
 
-function cleanup(effectFn) {
+function cleanup(effectFn: effectFnType) {
   for (let i = 0; i < effectFn.deps.length; i++) effectFn.deps[i].delete(effectFn)
 
   effectFn.deps.length = 0
