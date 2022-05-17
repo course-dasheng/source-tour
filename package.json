@@ -24,6 +24,7 @@
   "homepage": "https://github.com/course-dasheng/source-tour#readme",
   "devDependencies": {
     "@antfu/eslint-config": "^0.23.0",
+    "c8": "^7.11.3",
     "eslint": "^8.14.0",
     "fast-glob": "^3.2.11",
     "tsup": "^5.12.6",
