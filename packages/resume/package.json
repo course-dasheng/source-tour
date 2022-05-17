@@ -1,6 +1,6 @@
 {
   "name": "shengxj",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "",
   "main": "src/index.js",
   "type": "module",
@@ -14,10 +14,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
     "chalk": "^5.0.1",
     "inquirer": "^8.2.4",
-    "open": "^8.4.0",
-    "terminal-link": "^3.0.0"
+    "open": "^8.4.0"
   }
 }
