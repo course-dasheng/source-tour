@@ -1,12 +1,12 @@
 {
   "name": "shengxj",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "",
-  "main": "dist/resume.cjs",
-  "module": "dist/resume.mjs",
-  "types": "dist/resume.d.ts",
+  "main": "src/index.js",
+  "type": "module",
+
   "bin": {
-    "shengxj": "bin/resume.mjs"
+    "shengxj": "bin/resume.js"
   },
   "scripts": {
     "build": "unbuild"

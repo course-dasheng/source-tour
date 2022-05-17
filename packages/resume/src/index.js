@@ -1,6 +1,8 @@
 import chalk from 'chalk'
-import { ask } from './ques'
-const userinfo:string = `基本信息
+import inquirer from 'inquirer'
+import open from 'open'
+
+const userinfo = `基本信息
 姓名:盛鑫晶
 工作年限:10年
 Github: github.com/shengxinjing
@@ -29,6 +31,35 @@ XXX-XXX:    XXXXXX   XXXXXXXX
 4. 参与YY项目开发，使用React开发其中XX模块和XX个页面代码
 `
 
+
+async function ask(){
+  let questions = [
+    {
+      type: 'list',
+      name: 'name',
+      message: '想做点啥?',
+      choices:[
+        {name:'看我的github', url:'https://github.com/shengxinjing'},
+        {name:'给我发邮件', url:'mailto:316783812@qq.com'},
+        {name:'加我微信', url:'https://shengxinjing.cn/weixin.jpg'},
+        {name:'学习网站', url:'https://shengxinjing.cn/'},
+        {name:'我的B站', url:'https://space.bilibili.com/26995758'},
+      ].map(item=>({
+        name:item.name,
+        value: async()=>{
+          await open(item.url)
+          let answer = await inquirer.prompt(questions)
+          answer.name()
+        }
+      }))
+    }
+  ]
+  
+  let answer = await inquirer.prompt(questions)
+  answer.name()
+}
+
+
 const cc = chalk.bgHex('#d07a3a').hex('#FFF').bold
 const bk = chalk.bgHex('#4a9a98').hex('#FFF').bold
 const h1 = chalk.bgHex('#808080').hex('#FFF').bold.italic
@@ -40,17 +71,17 @@ const MG = (n = 1) => bk(' '.repeat(n))
 const EMPTY_ROW = MG(LINE_WIDTH)
 
 // 18+6
-function center(str: string): string {
+function center(str) {
   const len = getLen(str)
   const pad = Math.floor((LINE_WIDTH - getLen(str)) / 2)
   return ' '.repeat(pad) + str + ' '.repeat(LINE_WIDTH - len - pad)
 }
 
-function genLine(str: string, n: number = LINE_WIDTH): string {
+function genLine(str, n = LINE_WIDTH) {
   const len = getLen(str)
   return str + ' '.repeat(n - len)
 }
-function genLabel(label: string, text: string) {
+function genLabel(label, text) {
   return h1(genLine(label, LABEL_WIDTH)) + r1(genLine(text, LINE_WIDTH - LABEL_WIDTH))
 }
 
@@ -65,7 +96,7 @@ function getLen(str) {
   return realLength
 }
 
-function getInfo(): string {
+function getInfo() {
   const info = userinfo.split('\n\n').filter(Boolean)
   const ret = [
     EMPTY_ROW,
@@ -93,7 +124,7 @@ function getInfo(): string {
   }).join('\n')
 }
 
-const resume:string = getInfo()
+const resume = getInfo()
 // eslint-disable-next-line no-console
 console.log(resume)
 ask()
