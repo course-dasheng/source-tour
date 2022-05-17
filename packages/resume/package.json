@@ -1,0 +1,24 @@
+{
+  "name": "shengxj",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/resume.cjs",
+  "module": "dist/resume.mjs",
+  "types": "dist/resume.d.ts",
+  "bin": {
+    "shengxj": "bin/resume.mjs"
+  },
+  "scripts": {
+    "build": "unbuild",
+    "publish":"npx np"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "chalk": "^5.0.1",
+    "inquirer": "^8.2.4",
+    "open": "^8.4.0",
+    "terminal-link": "^3.0.0"
+  }
+}
