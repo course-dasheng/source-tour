@@ -9,8 +9,7 @@
     "shengxj": "bin/resume.mjs"
   },
   "scripts": {
-    "build": "unbuild",
-    "publish":"npx np"
+    "build": "unbuild"
   },
   "keywords": [],
   "author": "",
