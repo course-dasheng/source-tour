@@ -24,9 +24,7 @@ interface EffectOption {
   immediate?: boolean
   scheduler?: (...args: any[]) => void
 }
-export function watchEffect<T>(){
 
-}
 export function effect<T>(
   fn: () => T,
   options: EffectOption = {},
@@ -85,6 +83,11 @@ function cleanup(effectFn: effectFnType) {
 
   effectFn.deps.length = 0
 }
+
+// export type WatchStopHandle = () => void
+// export function watchEffect(effect):WatchStopHandle{
+//   return ()=>{}
+// }
 export function track(target, type, key) {
   if (!activeEffect || !shouldTrack)
     return
