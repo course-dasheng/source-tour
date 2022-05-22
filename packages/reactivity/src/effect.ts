@@ -1,4 +1,5 @@
 import { ITERATE_KEY } from './baseHandlers'
+import {initDepMarkers,finalizeDepMarkers,newTracked,wasTracked, createDep} from './dep'
 let activeEffect: effectFnType | undefined
 let shouldTrack = true
 export function stopTrack() {
@@ -11,6 +12,13 @@ export function startTrack() {
 const effectStack: any[] = []
 const targetMap = new WeakMap()
 
+// effect的嵌套深度
+let effectTrackDepth = 0 
+// 标识依赖收集的状态 二进制标记
+export let trackOpBit = 1
+// 最大标记的位数，超过这个js，恢复全部clean的逻辑 数字太大可能溢出
+const maxMarkerBits = 30
+
 interface EffectOption {
   lazy?: boolean
   immediate?: boolean
@@ -22,14 +30,32 @@ export function effect<T>(
 ) {
   // effect嵌套，通过队列管理
   const effectFn = () => {
-    cleanup(effectFn)
-    activeEffect = effectFn
-    // 在调用副作用函数之前将当前副作用函数压栈
-    effectStack.push(effectFn)
-    // fn执行的时候，内部读取响应式数据的时候，就能在get配置里读取到activeEffect
-    const res = fn()
-    effectStack.pop()
-    activeEffect = effectStack[effectStack.length - 1]
+    let res
+    try{
+
+      activeEffect = effectFn
+      // 在调用副作用函数之前将当前副作用函数压栈
+      effectStack.push(effectFn)
+      trackOpBit = 1<<effectTrackDepth //标记位 当前effect的二进制位置
+      if (effectTrackDepth <= maxMarkerBits) {
+        // 给依赖打标记
+        initDepMarkers(effectFn)
+      }
+      else {
+        cleanup(effectFn)
+      }
+      // fn执行的时候，内部读取响应式数据的时候，就能在get配置里读取到activeEffect
+      res = fn()
+    }finally{
+      if (effectTrackDepth <= maxMarkerBits) {
+        // 完成依赖标记
+        finalizeDepMarkers(effectFn)
+      }
+      // 恢复上个effect嵌套
+      trackOpBit = 1 << --effectTrackDepth
+      effectStack.pop()
+      activeEffect = effectStack[effectStack.length - 1]
+    }
     return res
   }
   effectFn.deps = [] // 收集依赖
@@ -40,7 +66,7 @@ export function effect<T>(
   effectFn.options = options // 调度时机 watchEffect回用到
   return effectFn
 }
-type effectFnType = ReturnType<typeof effect>
+export type effectFnType = ReturnType<typeof effect>
 
 function cleanup(effectFn: effectFnType) {
   for (let i = 0; i < effectFn.deps.length; i++) effectFn.deps[i].delete(effectFn)
@@ -69,15 +95,34 @@ export function track(target, type, key) {
   }
   let deps = depsMap.get(key)
   if (!deps)
-    deps = new Set()
-
-  if (!deps.has(activeEffect) && activeEffect) {
-    // 防止重复注册
-    deps.add(activeEffect)
-    activeEffect.deps.push(deps)
-  }
+    deps = createDep()
   depsMap.set(key, deps)
+  trackEffects(deps) // 标记依赖
 }
+
+function trackEffects(deps) {
+  let shouldTrack = false
+  if (effectTrackDepth <= maxMarkerBits) {
+    if (!newTracked(deps)) {
+      // | 授权这个位置的effect 为新依赖
+      deps.n |= trackOpBit 
+      // 依赖已经被收集，则不需要再次收集
+      shouldTrack = !wasTracked(deps)
+    }
+  }
+  else {
+    // 全部清理
+    shouldTrack = !deps.has(activeEffect)
+  }
+  if (shouldTrack && activeEffect && !deps.has(activeEffect) ) {
+    // 防止重复注册
+    // 收集依赖  
+    deps.add(activeEffect)
+    activeEffect!.deps.push(deps)
+  }
+}
+
+
 export function trigger(target, type, key, value = '') {
   // console.log(`触发 trigger -> target:  type:${type} key:${key}`)
   // 从targetMap中找到触发的函数，执行他
@@ -86,7 +131,6 @@ export function trigger(target, type, key, value = '') {
     // 没找到依赖
     return
   }
-
   const deps = depsMap.get(key)
 
   // set forEach里delete和add会死循环 ，新建一个set
