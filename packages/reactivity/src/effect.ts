@@ -1,5 +1,7 @@
 import { ITERATE_KEY } from './baseHandlers'
 import {initDepMarkers,finalizeDepMarkers,newTracked,wasTracked, createDep} from './dep'
+import { recordEffectScope } from './effectScope'
+
 let activeEffect: effectFnType | undefined
 let shouldTrack = true
 export function stopTrack() {
@@ -74,6 +76,7 @@ export function effect<T>(
     }
   }
   effectFn.options = options // 调度时机 watchEffect回用到
+  recordEffectScope(effectFn)
   return effectFn
 }
 export type effectFnType = ReturnType<typeof effect>
