@@ -186,6 +186,20 @@ describe('测试effect', () => {
     expect(arr.join(',')).toBe('1,end,2')
     expect(arr1.join(',')).toBe('1,2,end')
   })
+  it('手动停止',()=>{
+    let data = reactive({
+      name:'大圣'
+    })
+    let fn = vi.fn((...args)=>{})
+    let effectFn = effect(()=>{
+      fn(data.name)
+    })
+    data.name = '小圣'
+    expect(fn).toHaveBeenCalledTimes(2)
+    effectFn.stop()
+    data.name = '大圣'
+    expect(fn).toHaveBeenCalledTimes(2)
+  })
   it('基于调度功能的性能优化,一次事件循环中修改多次，vue渲染的优化',async ()=>{
     const data = { age: 1}
     // 对原始数据的代理

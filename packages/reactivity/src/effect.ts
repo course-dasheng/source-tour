@@ -24,6 +24,9 @@ interface EffectOption {
   immediate?: boolean
   scheduler?: (...args: any[]) => void
 }
+export function watchEffect<T>(){
+
+}
 export function effect<T>(
   fn: () => T,
   options: EffectOption = {},
@@ -62,6 +65,15 @@ export function effect<T>(
   if (!options.lazy) {
     // 没有配置lazy 直接执行
     effectFn()
+  }
+  effectFn.stop = function(){
+    const { deps } = effectFn
+    if (deps.length) {
+      for (let i = 0; i < deps.length; i++) {
+        deps[i].delete(effectFn)
+      }
+      deps.length = 0
+    }
   }
   effectFn.options = options // 调度时机 watchEffect回用到
   return effectFn
