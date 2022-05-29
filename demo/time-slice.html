@@ -92,10 +92,13 @@
      // requestIdleCallback 可以利用浏览器的空闲时间，来进行计算
      let cur = 0
      let num = 0
-     function diff1(deadline){
+     function workLoop(deadline){
       //  当前浏览器还有空闲时间
       
       while(deadline.timeRemaining()>1){
+        // performUnitOfWork(){
+
+        // }
         let i = 100
         while(i>0){
           num+=2**(Math.random())
@@ -106,7 +109,7 @@
       if(cur<10000000){
         // 还没算完。但是，浏览器有任务了
         // 控制权还给浏览器
-        window.requestIdleCallback(diff1)
+        window.requestIdleCallback(workLoop)
       }else{
         // 算完了
        document.getElementById('demo').innerHTML = num
@@ -117,8 +120,8 @@
 
      setInterval(()=>{
       // diff()
-      // diff1()
-      window.requestIdleCallback(diff1)
+      // workLoop()
+      window.requestIdleCallback(workLoop)
      },2000)
 
 
