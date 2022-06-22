@@ -10,7 +10,9 @@
     "build:utils": "pnpm run --filter @shengxj/utils build",
     "build:reactivity": "pnpm run --filter @shengxj/reactivity build",
     "build": "pnpm run  --filter=\"@shengxj/*\" --filter='shengxj' build ",
-    "lint": "eslint packages/**/src --fix"
+    "lint": "eslint packages/**/src --fix",
+    "docs": "vitepress dev docs/",
+    "docs:build": "vitepress build docs/"
   },
   "repository": {
     "type": "git",
