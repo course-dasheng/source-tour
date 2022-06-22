@@ -33,6 +33,7 @@
     "jsdom": "^19.0.0",
     "tsup": "^5.12.6",
     "unbuild": "^0.7.4",
+    "vitepress": "1.0.0-alpha.2",
     "vitest": "^0.10.2"
   },
   "dependencies": {
