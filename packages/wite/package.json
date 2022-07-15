@@ -1,0 +1,20 @@
+{
+  "name": "@shengxj/wite",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "lint": "eslint src --fix",
+    "release": "npx bumpp --commit --push --tag"
+  },
+  "bin":{
+    "wite":"./bin/wite.mjs"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
