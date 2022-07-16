@@ -1,4 +1,5 @@
 import cac from "cac"
+import { startServer} from './server'
 
 const cli = cac('vite')
 
@@ -7,6 +8,7 @@ cli
   .alias("dev")
   .action(async () => {
     console.log('测试1')
+    startServer()
   })
 
 cli.help()

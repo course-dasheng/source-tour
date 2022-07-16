@@ -39,10 +39,12 @@
   "dependencies": {
     "@changesets/cli": "^2.22.0",
     "cac": "^6.7.14",
+    "connect": "^3.7.0",
     "es-module-lexer": "^1.0.3",
     "esbuild": "^0.15.9",
     "fs-extra": "^10.1.0",
     "magic-string": "^0.26.4",
+    "picocolors": "^1.0.0",
     "rollup": "^2.79.1"
   }
 }
