@@ -38,6 +38,7 @@
   },
   "dependencies": {
     "@changesets/cli": "^2.22.0",
+    "@types/node": "^18.7.18",
     "cac": "^6.7.14",
     "connect": "^3.7.0",
     "es-module-lexer": "^1.0.3",
