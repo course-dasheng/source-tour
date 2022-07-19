@@ -39,13 +39,16 @@
   "dependencies": {
     "@changesets/cli": "^2.22.0",
     "@types/node": "^18.7.18",
+    "@types/resolve": "^1.20.2",
     "cac": "^6.7.14",
     "connect": "^3.7.0",
+    "debug": "^4.3.4",
     "es-module-lexer": "^1.0.3",
     "esbuild": "^0.15.9",
     "fs-extra": "^10.1.0",
     "magic-string": "^0.26.4",
     "picocolors": "^1.0.0",
+    "resolve": "^1.22.1",
     "rollup": "^2.79.1"
   }
 }

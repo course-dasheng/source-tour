@@ -1,2 +1,1 @@
 // client
-console.log('client')

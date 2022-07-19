@@ -1,18 +1,16 @@
-
-
-import { createRenderer } from "./runtime-core"
+import { createRenderer } from './runtime-core'
 
 // runtime-dom
 
 let renderer
 
-let nodeOps = {
-  createElement:()=>{},
-  createText:()=>{},
-  setText:()=>{},
-  patchProp:()=>{},
-  insert:()=>{},
-  remove:()=>{},
+const nodeOps = {
+  createElement: () => {},
+  createText: () => {},
+  setText: () => {},
+  patchProp: () => {},
+  insert: () => {},
+  remove: () => {},
 }
 function ensureRenderer() {
   // 缓存
@@ -20,5 +18,5 @@ function ensureRenderer() {
 }
 
 export const createApp = (...args) => {
-  return ensureRenderer().createApp(...args);
-};
+  return ensureRenderer().createApp(...args)
+}

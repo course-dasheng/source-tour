@@ -1,8 +1,9 @@
-import { effectFnType, trackOpBit } from './effect'
+import type { effectFnType } from './effect'
+import { trackOpBit } from './effect'
 
 export type Dep = Set<effectFnType> & TrackedMarkers
 
-type TrackedMarkers = {
+interface TrackedMarkers {
   w: number // wasTracked
   n: number // newTracked
 }
@@ -38,7 +39,8 @@ export const finalizeDepMarkers = (effect: effectFnType) => {
       if (wasTracked(dep) && !newTracked(dep)) {
         // 之前的依赖现在没了
         dep.delete(effect)
-      } else {
+      }
+      else {
         deps[ptr++] = dep
       }
       // 清理二进制标记

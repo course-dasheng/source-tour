@@ -11,7 +11,9 @@ export async function startServer() {
   const rootDir = process.cwd()
   app.listen(PORT, async () => {
     await optimize(rootDir)
+    // eslint-disable-next-line no-console
     console.log(red(`🍻 Wite 启动!耗时: ${Date.now() - startTime}ms`))
+    // eslint-disable-next-line no-console
     console.log(`${green(`http://localhost:${PORT}`)}`)
   })
 }

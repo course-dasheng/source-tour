@@ -31,34 +31,32 @@ XXX-XXX:    XXXXXX   XXXXXXXX
 4. 参与YY项目开发，使用React开发其中XX模块和XX个页面代码
 `
 
-
-async function ask(){
-  let questions = [
+async function ask() {
+  const questions = [
     {
       type: 'list',
       name: 'name',
       message: '想做点啥?',
-      choices:[
-        {name:'看我的github', url:'https://github.com/shengxinjing'},
-        {name:'给我发邮件', url:'mailto:316783812@qq.com'},
-        {name:'加我微信', url:'https://shengxinjing.cn/weixin.jpg'},
-        {name:'学习网站', url:'https://shengxinjing.cn/'},
-        {name:'我的B站', url:'https://space.bilibili.com/26995758'},
-      ].map(item=>({
-        name:item.name,
-        value: async()=>{
+      choices: [
+        { name: '看我的github', url: 'https://github.com/shengxinjing' },
+        { name: '给我发邮件', url: 'mailto:316783812@qq.com' },
+        { name: '加我微信', url: 'https://shengxinjing.cn/weixin.jpg' },
+        { name: '学习网站', url: 'https://shengxinjing.cn/' },
+        { name: '我的B站', url: 'https://space.bilibili.com/26995758' },
+      ].map(item => ({
+        name: item.name,
+        value: async () => {
           await open(item.url)
-          let answer = await inquirer.prompt(questions)
+          const answer = await inquirer.prompt(questions)
           answer.name()
-        }
-      }))
-    }
+        },
+      })),
+    },
   ]
-  
-  let answer = await inquirer.prompt(questions)
+
+  const answer = await inquirer.prompt(questions)
   answer.name()
 }
-
 
 const cc = chalk.bgHex('#d07a3a').hex('#FFF').bold
 const bk = chalk.bgHex('#4a9a98').hex('#FFF').bold

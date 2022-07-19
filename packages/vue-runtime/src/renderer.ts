@@ -1,5 +1,3 @@
-
-
-export function createRenderer(nodeOps){
-
+export function createRenderer(nodeOps) {
+  return nodeOps
 }

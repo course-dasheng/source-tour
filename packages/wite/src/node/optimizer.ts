@@ -5,8 +5,8 @@ import { build } from 'esbuild'
 import { magenta } from 'picocolors'
 import { scanPlugin } from './plugins/scan'
 import { preBundlePlugin } from './plugins/prebundle'
-const htmlTypesRE = /\.(html|vue|svelte|astro)$/
-const JS_TYPES_RE = /\.(?:j|t)sx?$|\.mjs$/
+// const htmlTypesRE = /\.(html|vue|svelte|astro)$/
+// const JS_TYPES_RE = /\.(?:j|t)sx?$|\.mjs$/
 
 // 忽略空格等边界情况 src=\s*=\s*  => src=""
 const scriptRE = /<script type="module" src="([^>]*)"><\/script>/
@@ -39,6 +39,7 @@ async function scanImports(root: string, jsEntry: string) {
     write: false,
     plugins: [scanPlugin(deps)],
   })
+  // eslint-disable-next-line no-console
   console.log(
   `${magenta('需要预构建的依赖')}:\n${[...deps]
     .map(magenta)

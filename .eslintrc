@@ -1,6 +1,9 @@
 {
   "extends": "@antfu",
   "rules":{
-    "@typescript-eslint/no-use-before-define": ["error", { "functions": false, "classes": true, "variables": false }]
+    "@typescript-eslint/no-use-before-define": ["error", { "functions": false, "classes": true, "variables": false }],
+    "@typescript-eslint/no-this-alias":"off",
+    "@typescript-eslint/no-var-requires":"off",
+    "import/no-mutable-exports":"off"
   }
 }

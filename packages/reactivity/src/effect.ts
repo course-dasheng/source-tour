@@ -1,5 +1,5 @@
 import { ITERATE_KEY } from './baseHandlers'
-import {initDepMarkers,finalizeDepMarkers,newTracked,wasTracked, createDep} from './dep'
+import { createDep, finalizeDepMarkers, initDepMarkers, newTracked, wasTracked } from './dep'
 import { recordEffectScope } from './effectScope'
 
 let activeEffect: effectFnType | undefined
@@ -15,7 +15,7 @@ const effectStack: any[] = []
 const targetMap = new WeakMap()
 
 // effect的嵌套深度
-let effectTrackDepth = 0 
+let effectTrackDepth = 0
 // 标识依赖收集的状态 二进制标记
 export let trackOpBit = 1
 // 最大标记的位数，超过这个js，恢复全部clean的逻辑 数字太大可能溢出
@@ -34,12 +34,11 @@ export function effect<T>(
   // effect嵌套，通过队列管理
   const effectFn = () => {
     let res
-    try{
-
+    try {
       activeEffect = effectFn
       // 在调用副作用函数之前将当前副作用函数压栈
       effectStack.push(effectFn)
-      trackOpBit = 1<<effectTrackDepth //标记位 当前effect的二进制位置
+      trackOpBit = 1 << effectTrackDepth // 标记位 当前effect的二进制位置
       if (effectTrackDepth <= maxMarkerBits) {
         // 给依赖打标记
         initDepMarkers(effectFn)
@@ -49,7 +48,8 @@ export function effect<T>(
       }
       // fn执行的时候，内部读取响应式数据的时候，就能在get配置里读取到activeEffect
       res = fn()
-    }finally{
+    }
+    finally {
       if (effectTrackDepth <= maxMarkerBits) {
         // 完成依赖标记
         finalizeDepMarkers(effectFn)
@@ -66,12 +66,12 @@ export function effect<T>(
     // 没有配置lazy 直接执行
     effectFn()
   }
-  effectFn.stop = function(){
+  effectFn.stop = function () {
     const { deps } = effectFn
     if (deps.length) {
-      for (let i = 0; i < deps.length; i++) {
+      for (let i = 0; i < deps.length; i++)
         deps[i].delete(effectFn)
-      }
+
       deps.length = 0
     }
   }
@@ -123,7 +123,7 @@ function trackEffects(deps) {
   if (effectTrackDepth <= maxMarkerBits) {
     if (!newTracked(deps)) {
       // | 授权这个位置的effect 为新依赖
-      deps.n |= trackOpBit 
+      deps.n |= trackOpBit
       // 依赖已经被收集，则不需要再次收集
       shouldTrack = !wasTracked(deps)
     }
@@ -132,14 +132,13 @@ function trackEffects(deps) {
     // 全部清理
     shouldTrack = !deps.has(activeEffect)
   }
-  if (shouldTrack && activeEffect && !deps.has(activeEffect) ) {
+  if (shouldTrack && activeEffect && !deps.has(activeEffect)) {
     // 防止重复注册
-    // 收集依赖  
+    // 收集依赖
     deps.add(activeEffect)
     activeEffect!.deps.push(deps)
   }
 }
-
 
 export function trigger(target, type, key, value = '') {
   // console.log(`触发 trigger -> target:  type:${type} key:${key}`)

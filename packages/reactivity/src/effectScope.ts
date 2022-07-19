@@ -1,5 +1,5 @@
-import {effectFnType} from './effect'
-//设计有点类似effect, active记录当前的effectscope
+import type { effectFnType } from './effect'
+// 设计有点类似effect, active记录当前的effectscope
 let activeEffectScope: EffectScope | undefined
 // 可能轮询调用，记录栈
 const effectScopeStack: EffectScope[] = []
@@ -9,13 +9,13 @@ export class EffectScope {
   active = true
   // effects
   effects: effectFnType[] = []
-  scopes: EffectScope[] =[]
+  scopes: EffectScope[] = []
   // 当前scope在父级中的位置
   index: number | undefined
   constructor() {
     if (activeEffectScope) {
       // 记住在父级中的位置
-      this.index = activeEffectScope.scopes.push(this)-1
+      this.index = activeEffectScope.scopes.push(this) - 1
     }
   }
 
@@ -27,11 +27,13 @@ export class EffectScope {
         this.on()
         // 执行
         return fn()
-      } finally {
+      }
+      finally {
         this.off()
       }
     }
   }
+
   on() {
     // 将当前scope入栈，并设置为当前effect
     effectScopeStack.push(this)
@@ -49,9 +51,9 @@ export class EffectScope {
     // 停止所有监听 调用effect自己的stop
     this.effects.forEach(e => e.stop())
     // 停止子级scope
-    if (this.scopes) { 
+    if (this.scopes)
       this.scopes.forEach(e => e.stop())
-    }
+
     // @todo stop的时候从父scope中删除
   }
 }
@@ -61,13 +63,13 @@ export function effectScope() {
   return new EffectScope()
 }
 
-export function getCurrentScope(){
+export function getCurrentScope() {
   return activeEffectScope
 }
 
 export function recordEffectScope(
   effect: effectFnType,
-  scope?: EffectScope | null
+  scope?: EffectScope | null,
 ) {
   // 统计effect
   scope = scope || activeEffectScope
