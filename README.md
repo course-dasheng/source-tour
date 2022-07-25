@@ -7,8 +7,7 @@
    3. 开发工具：webpack rollup vite （大致的原理）
    4. 工具库：axios
    5. 自动化测试:vitest
-   6. 组件库：antd, naiveui，element
-   7. ....
+   6. ....
 2. 学习的方式
    1. 手写mini版本，去阅读正式的源码（自己github开源）
    2. 给仓库提pr
