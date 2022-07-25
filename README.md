@@ -2,12 +2,11 @@
 
 <!-- 开源的意识了 -->
 1. 源码的场景
-   1. 前端框架：Vue React生态
+   1. 前端框架：Vue React生态全家桶
    2. 脚手架：ni create-vue
    3. 开发工具：webpack rollup vite （大致的原理）
    4. 工具库：axios
-   5. 自动化测试:vitest
-   6. ....
+   5. ...其他学院提需求的库
 2. 学习的方式
    1. 手写mini版本，去阅读正式的源码（自己github开源）
    2. 给仓库提pr
