@@ -10,7 +10,11 @@
 6. rollup 线上builder
 7. picocolors  命令行输出颜色
 8. connect     http中间件服务
+9. resolve     node的路径解析算法 （包括node_modules)
 
+
+## node自带
+fs、path
 ```bash
 pnpm i cac es-module-lexer esbuild fs-extra magic-string rollup -w
 ```
