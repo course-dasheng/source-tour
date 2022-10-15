@@ -14,7 +14,9 @@ export default {
       { text: 'React', link: '/react/' },
       { text: 'Vite', link: '/vite/' },
       { text: '框架设计基础', link: '/guide/design' },
-      { text: '企业级应用开发文档', link: 'https://dasheng.netlify.app/' },
+      { text: '前端架构师指南', link: 'https://web-architect.netlify.app/' },
+      { text: '面试刷题', link: 'https://fullstack-challenges.netlify.app/' },
+
     ],
     socialLinks: [
       { icon: 'discord', link: 'https://discord.gg/V3ZHdnZErY' },
