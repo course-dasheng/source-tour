@@ -20,7 +20,7 @@ export default {
     ],
     socialLinks: [
       { icon: 'discord', link: 'https://discord.gg/V3ZHdnZErY' },
-      { icon: 'github', link: 'https://github.com/course-dasheng/fe-source-tour/' },
+      { icon: 'github', link: 'https://github.com/course-dasheng/source-tour' },
       { icon: 'twitter', link: 'https://twitter.com/shengxj1' },
     ],
     sidebar: {
