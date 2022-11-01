@@ -6,8 +6,7 @@
    1. 前端框架：Vue React 生态全家桶
    2. 脚手架：ni create-vue
    3. 开发工具：webpack rollup vite （大致的原理）
-   4. 工具库：axios
-   5. ...其他学院提需求的库
+   4. ...其他学员提需求的库
 2. 学习的方式
    1. 手写 mini 版本，去阅读正式的源码（自己 github 开源）
    2. 给仓库提 pr
@@ -30,6 +29,8 @@ packages
 ```
 
 ## 学员作品
-
 - [学员网名](作品链接)
+- [花果山大圣](https://github.com/course-dasheng/source-tour)
 - [奥兰度](https://github.com/zer0fire/source-tour)
+- [frankcao](https://github.com/Frankcaozas/mini-frameworks)
+- [gy1001](https://github.com/gy1001/learn-source-code.git)
