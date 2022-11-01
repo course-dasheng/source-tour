@@ -2,6 +2,8 @@
 
 本课程是源码原理课程，需要一些前置知识
 
+
+1. [Git Github](https://github.com/)注册账号，学习使用
 1. [TypeScript 入门教程](https://ts.xcatliu.com/)
 2. [Vuejs官网互动教程](https://cn.vuejs.org/tutorial/#step-1) 
 3. [pnpm](https://www.pnpm.cn/)
@@ -16,7 +18,6 @@
 ## 依赖的第三方包
 1. [unbuild](https://github.com/unjs/unbuild)
 2. [Vitest](https://cn.vitest.dev/)
-3. 
 
 ## 参考学习资料
 1. [Vue.js设计与实现](https://book.douban.com/subject/35768338/)
