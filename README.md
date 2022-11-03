@@ -35,5 +35,6 @@ packages
 - [frankcao](https://github.com/Frankcaozas/mini-frameworks)
 - [gy1001](https://github.com/gy1001/learn-source-code.git)
 - [大圣小号](https://github.com/woniuppp/source-tour-from-dasheng)
+- [Gec](https://github.com/JusticeGe/source-tour-from-me)
 - [时光说](https://github.com/heimanba-ct/source-tour-ct)
 - [大嘴蝠](https://github.com/ly102412/learn-source-tour)
