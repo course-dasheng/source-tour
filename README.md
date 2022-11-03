@@ -45,3 +45,4 @@ packages
 - [小象](https://github.com/Q-kil/source-tour-work)
 - [混沌传奇](https://github.com/legend-li/source-learning)
 - [小宇](https://github.com/hky301/learn-source-tour)
+- [荆轲](https://github.com/kevynyu/learn-source-tour)
