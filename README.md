@@ -32,7 +32,7 @@ packages
 
 - [学员网名](作品链接)
 - [花果山大圣](https://github.com/course-dasheng/source-tour)
-- [奥兰度](https://github.com/zer0fire/source-tour)
+- [奥兰度](https://github.com/zer0fire/sourcecode-homework)
 - [frankcao](https://github.com/Frankcaozas/mini-frameworks)
 - [gy1001](https://github.com/gy1001/learn-source-code.git)
 - [大圣小号](https://github.com/woniuppp/source-tour-from-dasheng)
@@ -46,3 +46,4 @@ packages
 - [混沌传奇](https://github.com/legend-li/source-learning)
 - [小宇](https://github.com/hky301/learn-source-tour)
 - [☀️](https://github.com/421587303/source-tour-work)
+- [荆轲](https://github.com/kevynyu/learn-source-tour)
