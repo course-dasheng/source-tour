@@ -47,3 +47,5 @@ packages
 - [小宇](https://github.com/hky301/learn-source-tour)
 - [leeon](https://github.com/421587303/source-tour-work)
 - [荆轲](https://github.com/kevynyu/learn-source-tour)
+- [呵呵](https://github.com/SNJiang1992/source-tour)
+

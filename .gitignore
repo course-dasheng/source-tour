@@ -108,3 +108,7 @@ dist
 # pnpm
 .pnpm-debug.log
 **/.pnpm-debug.log
+
+
+# vscode history
+.history
