@@ -37,7 +37,7 @@ export default {
           text: 'Vue',
           items: [
             { text: 'Vue3架构', link: '/vue/' },
-            { text: '响应式', link: '/vue/reactive/' },
+            { text: '响应式', link: '/vue/02-reactivity' },
             { text: '路由vue-router', link: '/vue/reactive/' },
           ],
         },
