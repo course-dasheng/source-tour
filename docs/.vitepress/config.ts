@@ -29,7 +29,7 @@ export default {
           text: '教程',
           items: [
             { text: '环境准备', link: '/guide/' },
-            { text: '开发规范', link: '/guide/scripts' },
+            // { text: '开发规范', link: '/guide/scripts' },
             { text: '框架设计基础知识', link: '/guide/design' },
           ],
         },
@@ -37,7 +37,7 @@ export default {
           text: 'Vue',
           items: [
             { text: 'Vue3架构', link: '/vue/' },
-            { text: '响应式', link: '/vue/reactive/' },
+            { text: '响应式', link: '/vue/02-reactivity' },
             { text: '路由vue-router', link: '/vue/reactive/' },
           ],
         },
