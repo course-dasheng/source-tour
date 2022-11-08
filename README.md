@@ -54,4 +54,5 @@ packages
 - [qazyuan](https://github.com/qazyuan/source-tour)
 - [🌈](https://github.com/Christina-nana/mini-source-code-zhl)
 - [nbhaohao](https://github.com/nbhaohao/fe-source-tour)
+- [lyws](https://github.com/XiChaoMing/xcm-source-tour)
 
