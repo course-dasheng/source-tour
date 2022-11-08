@@ -1,8 +1,22 @@
-export { effect } from './effect'
-// export { computed } from './computed'
-export { reactive, shallowReactive, isReactive } from './reactive'
-// export { ref, isRef } from './ref'
-export { computed } from './computed'
-export { watch } from './watch'
-export { ref, isRef } from './ref'
-export { effectScope } from './effectScope'
+// @todo
+// vue的响应式实现
+import { isObject } from '@shengxj/utils'
+import { effect } from './effect'
+
+export const ret = isObject({})
+// console.log(ret)
+
+
+export { reactive } from './reactive'
+export { effect ,trigger,track} from './effect'
+export { ref } from './ref'
+
+
+// <组件1>
+//   <组件2>
+// createApp（组件）
+//   创建组件  （组件内部的数据, reavtive一下， script setup中直接调用的ref或者reactive
+//     effect(()=>{
+//       组件的更新逻辑
+//     })
+//   组件mount

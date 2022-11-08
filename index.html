@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <h1 id="title">{{count}}</h1>
+  <!-- <input type="text" id="input">
+  <button id="btn">click</button>
+  <ul id="todo-list"></ul>
+  
+  <h1>{{name}}</h1> -->
+
+  <script>
+    let ret = {count:1}
+    // 数据的读取，更新，删除，查询（key in obj) 都会触发
+    let obj = new Proxy(ret,{
+      get(target,key){
+        return target[key]
+      },
+      set(target,key,value){
+        target[key] = value
+        render()
+        console.log('set,trigger')
+      }
+    })
+     
+    function render(){
+      document.getElementById('title').innerText = obj.count
+    }
+
+    render()
+
+
+    setInterval(()=>{
+      obj.count++
+    },200)
+
+
+    // 命令式代码
+    // document.querySelector('#btn').addEventListener('click',()=>{
+    //   const value = document.querySelector('#input').value
+    //   let li = document.createElement('li')
+    //   li.innerText = value
+    //   document.querySelector('#todo-list').appendChild(li)
+    // },false)
+
+    // // 声明式的代码
+    // const name = ref('hello')
+    // name.value = 'xx'
+  </script>
+</body>
+</html>

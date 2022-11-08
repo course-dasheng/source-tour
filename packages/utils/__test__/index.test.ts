@@ -1,17 +1,20 @@
-import { describe, expect, it } from 'vitest'
-import { isObject, isOn } from '../src'
 
-describe('测试工具函数', () => {
-  it('isObject', () => {
+import {describe, it, expect} from 'vitest'
+import {isObject,isOn} from '../src'
+
+describe('测试工具库',()=>{
+  it('测试isObject函数',()=>{
+    expect(1+2).toBe(3)
     expect(isObject({})).toBe(true)
-    expect(isObject([])).toBe(true)
     expect(isObject(1)).toBe(false)
-    expect(isObject(false)).toBe(false)
-    expect(isObject(new Set())).toBe(true)
-    expect(isObject(new Date())).toBe(true)
+    expect(isObject(null)).toBe(false)
+    expect(isObject(undefined)).toBe(false)
+    expect(isObject('')).toBe(false)
+    expect(isObject([])).toBe(true)
   })
-  it('isOn', () => {
-    expect(isOn('onFoo')).toBe(true)
-    expect(isOn('Foo')).toBe(false)
+  it('测试isOn函数',()=>{
+    expect(isOn('onClick')).toBe(true)
+    expect(isOn('click')).toBe(false)
   })
+  // it('测试')
 })

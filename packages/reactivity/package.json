@@ -1,29 +1,18 @@
 {
   "name": "@shengxj/reactivity",
-  "version": "0.0.9",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.cjs"
-    }
-  },
+  "types":"dist/index.d.ts",
   "scripts": {
-    "test": "vitest",
-    "build": "unbuild",
-    "lint": "eslint src --fix",
-    "release": "npx bumpp --commit --push --tag"
+    "build":"unbuild",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "dependencies":{
+    "@shengxj/utils":"workspace:*"
+  },
+  "keywords": [],
   "author": "",
-  "dependencies": {
-    "@shengxj/utils": "workspace:*"
-  },
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  }
+  "license": "ISC"
 }

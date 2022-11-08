@@ -1,37 +1,38 @@
 import { isObject } from '@shengxj/utils'
-import { track, trigger } from './effect'
-import { reactive } from './reactive'
+import {track, trigger} from './effect'
+import {reactive} from './reactive'
+// num.value  只会访问value这个属性，我们不需要Proxy
 
-class RefImpl {
-  __isRef: boolean
-  _val: any
-  constructor(val) {
-    this.__isRef = true
+// 利用class的geeter和setter
+
+export function ref(val){
+  return new RefImpl(val)
+}
+
+// interface ref{
+//   _isRef: true
+//   _val:any
+// }
+// ref本身 也可以是复杂数据类型
+class RefImpl{
+  isRef:boolean
+  _val:any
+  constructor(val){
+    this.isRef = true
     this._val = convert(val)
   }
-
-  get value() {
-    track(this, 'refget', 'value')
+  get value(){
+    track(this,'ref-get','value')
     return this._val
   }
-
-  set value(val) {
-    if (val !== this._val) {
-      this._val = convert(val)
-      trigger(this, 'refset', 'value')
+  set value(newVal){
+    if(newVal!==this._val){
+      this._val = newVal
+      trigger(this,'ref-set','value')
     }
   }
 }
-
-export function ref(val) {
-  if (isRef(val))
-    return val
-
-  return new RefImpl(val)
+function convert(val){
+  return isObject(val) ? reactive(val):val
 }
-export function isRef(val) {
-  return !!(val && val.__isRef)
-}
-function convert(val) {
-  return isObject(val) ? reactive(val) : val
-}
+// conssole.log(v.value） //相当于执行了value函数 

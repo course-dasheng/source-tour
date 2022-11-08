@@ -1,23 +1,16 @@
 {
   "name": "@shengxj/utils",
-  "version": "0.0.4",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/index.cjs",
   "module": "dist/index.mjs",
-  "types": "dist/index.d.ts",
+  "types":"dist/index.d.ts",
   "scripts": {
-    "test": "vitest",
-    "lint": "eslint src --fix",
-    "build": "unbuild",
-    "release": "npx bumpp --commit --push --tag"
+    "build":"unbuild",
+    "stub":"unbuild --stub",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "files": [
-    "dist"
-  ],
+  "keywords": [],
   "author": "",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
-  }
+  "license": "ISC"
 }

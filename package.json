@@ -1,54 +1,29 @@
 {
-  "name": "@shengxj/source-tour",
-  "version": "0.0.3",
-  "description": "<!-- 开源的意识了 --> 1. 源码的场景    1. 前端框架：Vue React生态    2. 脚手架：ni create-vue    3. 开发工具：webpack rollup vite （大致的原理）    4. 工具库：axios    5. 自动化测试:vitest    6. 组件库：antd, naiveui，element    7. .... 2. 学习的方式    1. 手写mini版本，去阅读正式的源码（自己github开源）    2. 给仓库提pr    3. 写文章输出原理 3. 课程的设计    1. 简单到难    2. 实战优先 && 提pr && 写文章输出    3. 内部讨论会    4. 准备好你的github    5. 使用js or ts（esno，tsup)       1. 先从vue的响应式 和脚手架框架开始",
+  "name": "source-tour-demo",
+  "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "publish": "pnpm -r publish --access public --no-git-checks",
-    "test:vue": "vitest packages/reactivity",
-    "test": "vitest packages/",
     "build:utils": "pnpm run --filter @shengxj/utils build",
     "build:reactivity": "pnpm run --filter @shengxj/reactivity build",
-    "build": "pnpm run  --filter=\"@shengxj/*\" --filter='shengxj' build ",
-    "lint": "eslint packages/**/src --fix",
-    "docs": "vitepress dev docs/",
-    "docs:build": "vitepress build docs/"
+    "build": "pnpm run  --filter=\"@shengxj/*\"  build ",
+    "test": "vitest packages/",
+    "test:once": "vitest run packages/",
+    "coverage": "vitest run --coverage",
+    "lint":"eslint packages/**/src",
+    "lint:fix":"eslint packages/**/src --fix"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/course-dasheng/source-tour.git"
-  },
+  "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/course-dasheng/source-tour/issues"
-  },
-  "homepage": "https://github.com/course-dasheng/source-tour#readme",
   "devDependencies": {
-    "@antfu/eslint-config": "^0.23.0",
-    "c8": "^7.11.3",
-    "eslint": "^8.14.0",
-    "fast-glob": "^3.2.11",
-    "happy-dom": "^4.1.0",
-    "jsdom": "^19.0.0",
-    "tsup": "^5.12.6",
-    "unbuild": "^0.7.4",
-    "vitepress": "1.0.0-alpha.2",
-    "vitest": "^0.10.2"
+    "typescript": "^4.8.4",
+    "unbuild": "^0.9.4",
+    "vitest": "^0.24.5"
   },
   "dependencies": {
-    "@changesets/cli": "^2.22.0",
-    "@types/node": "^18.7.18",
-    "@types/resolve": "^1.20.2",
-    "cac": "^6.7.14",
-    "connect": "^3.7.0",
-    "debug": "^4.3.4",
-    "es-module-lexer": "^1.0.3",
-    "esbuild": "^0.15.9",
-    "fs-extra": "^10.1.0",
-    "magic-string": "^0.26.4",
-    "picocolors": "^1.0.0",
-    "resolve": "^1.22.1",
-    "rollup": "^2.79.1"
+    "@antfu/eslint-config": "^0.29.3",
+    "@vitest/coverage-c8": "^0.24.5",
+    "eslint": "^8.26.0"
   }
 }
