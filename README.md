@@ -52,4 +52,5 @@ packages
 - [大施](https://github.com/shixy96/web-source-tour)
 - [沐白](https://github.com/zyl921/my-source-tour)
 - [qazyuan](https://github.com/qazyuan/source-tour)
+- [nbhaohao](https://github.com/nbhaohao/fe-source-tour)
 
