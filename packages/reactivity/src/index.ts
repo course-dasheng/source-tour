@@ -7,9 +7,9 @@ export const ret = isObject({})
 // console.log(ret)
 
 
-export { reactive } from './reactive'
+export { reactive,shadowReactive,isReactive } from './reactive'
 export { effect ,trigger,track} from './effect'
-export { ref } from './ref'
+export { ref,isRef } from './ref'
 
 
 // <组件1>

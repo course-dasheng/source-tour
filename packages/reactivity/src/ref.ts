@@ -4,6 +4,9 @@ import {reactive} from './reactive'
 // num.value  只会访问value这个属性，我们不需要Proxy
 
 // 利用class的geeter和setter
+export function isRef(val){
+  return val.isRef
+}
 
 export function ref(val){
   return new RefImpl(val)

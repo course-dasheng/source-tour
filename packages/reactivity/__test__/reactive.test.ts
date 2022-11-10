@@ -1,5 +1,5 @@
 import { describe, expect, it,vi } from 'vitest'
-import { effect,reactive,ref } from '../src/'
+import { effect,reactive,ref ,shadowReactive,isReactive,isRef} from '../src/'
 // import {effect} from '../src/effect'
 // import {reactive} from '../src/reactive'
 describe('响应式',()=>{
@@ -54,7 +54,14 @@ describe('响应式',()=>{
     expect(fn).toBeCalledTimes(1)
     ret._count++
     expect(fn).toBeCalledTimes(2)
-
+  })
+  it('工具函数',()=>{
+    let val = ref(1)
+    let val2 = reactive({name:'dasheng'})
+    let val3 = shadowReactive({name:'dasheng'})
+    expect(isRef(val)).toBe(true)
+    expect(isReactive(val2)).toBe(true)
+    expect(isReactive(val3)).toBe(true)
 
   })
   it('ref',()=>{
@@ -80,9 +87,33 @@ describe('响应式',()=>{
     expect(val).toBe(2) // effect副作用执行了
   })
 
+
   // 每一个边缘处理case， 都需要一个测试
 })
+describe('浅层响应式',()=>{
+  it('shadowReactive',()=>{
+    let obj = shadowReactive({count:1, info:{name:'dasheng'}})
+    let val1,val2
+    effect(()=>{
+      val1 = obj.info.name
+    })
+    effect(()=>{
+      val2 = obj.count
+    })
+    
+    expect(val1).toBe('dasheng') // 过了
+    expect(val2).toBe(1) // 过了
 
+    obj.info.name = 'vue3'
+    obj.count++
+    expect(val1).toBe('dasheng') // 深层的没有响应式
+    expect(val2).toBe(2) // 过了
+
+    // obj.count++
+    // expect(val).toBe('vue3') // effect副作用执行了
+
+  })
+})
 // {},[]   (Prixy, get,set)
 // number,string  (ref)
 // map set weakmap weakset (Proxy)
@@ -113,5 +144,12 @@ describe('支持set/map',()=>{
     expect(val).toBe(2)
     set.delete(2)
     expect(val).toBe(1)
+  })
+  it('set的hash',()=>{
+    let set = reactive(new Set([1,2]))
+    expect(set.has(1)).toBe(true)
+    set.delete(1)
+    expect(set.has(1)).toBe(false)
+    // expect(val).toBe(1)
   })
 })
