@@ -59,7 +59,11 @@ export function effect(fn){
     try{
       activeEffect = effectFn
       effectStack.push(activeEffect)
-      cleanup(effectFn)
+      if(false){
+        
+      }else{
+        cleanup(effectFn)
+      }
       ret = fn() // 会触发Proxy的get方法，执行track，执行依赖收集的
     }finally{
       // fn内部还有effect，activeEffect指向就错了
