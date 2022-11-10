@@ -26,6 +26,43 @@ describe('响应式',()=>{
     expect(val).toBe('vue3') // effect副作用执行了
 
   })
+  it('响应式的清理',()=>{
+    let obj = reactive({
+      ok:true,
+      name:'dasheng'
+    })
+    let val
+    let fn = vi.fn(()=>{
+      val = obj.ok ? obj.name : 'vue3'
+    })
+    effect(fn)
+    expect(val).toBe('dasheng')
+    expect(fn).toBeCalledTimes(1)
+
+    obj.ok = false
+    expect(val).toBe('vue3')
+    expect(fn).toBeCalledTimes(2)
+
+    obj.name = 'xiaosheng'
+    expect(fn).toBeCalledTimes(2)
+
+
+  })
+  it('es6 set遍历的缺陷',()=>{
+    let fn = ()=>{
+      const set = new Set([1])
+      let n = 1
+      set.forEach(v=>{
+        set.delete(1)
+        set.add(1) //set没变化
+        n+=1
+        if(n>99){
+          throw new Error("死循环");
+        }
+      })
+    }
+    expect(()=>fn()).toThrowError('死循环')
+  })
   it('删除属性的响应式',()=>{
     let obj = reactive({name:'dasheng',count:1})
     let val

@@ -21,6 +21,7 @@ export function track(obj,type,key){
     depsMap.set(key,(deps = new Set()))
   }
   deps.add(activeEffect)
+  activeEffect.deps.push(deps)
 }
 
 // type:操作类型
@@ -34,19 +35,42 @@ export function trigger(obj,type,key){
   
   if(deps){
     // COL_KEY
-    deps.forEach(effect=>{
+    const depsToRun = new Set(deps)
+    depsToRun.forEach(effect=>{
       effect()
     })
   }
 }
 
+function cleanup(effectFn){
+  // effectFn的依赖清理
+  // 全部清理，track的时候重新收集 Vue3.2的时候进行了优化 ，位运算
+  for (let i = 0; i < effectFn.deps.length; i++) {
+    effectFn.deps[i].delete(effectFn)
+  }
+  effectFn.deps.length = []
+}
+
+// effect函数依赖的 key
+// key依赖的effect
 export function effect(fn){
-  activeEffect = fn
-  effectStack.push(activeEffect)
-  fn() // 会触发Proxy的get方法，执行track，执行完重置
-  // fn内部还有effect，activeEffect指向就错了
-  effectStack.pop()
-  // 回复上一个嵌套数组的值
-  // effectStack = []
-  activeEffect = effectStack[effectStack.length-1] 
+  const effectFn = ()=>{
+    let ret 
+    try{
+      activeEffect = effectFn
+      effectStack.push(activeEffect)
+      cleanup(effectFn)
+      ret = fn() // 会触发Proxy的get方法，执行track，执行依赖收集的
+    }finally{
+      // fn内部还有effect，activeEffect指向就错了
+      effectStack.pop()
+      // 回复上一个嵌套数组的值
+      // effectStack = []
+      activeEffect = effectStack[effectStack.length-1] 
+    }
+    return ret
+  }
+  effectFn.deps = []
+  effectFn()
+  return effectFn
 }
