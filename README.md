@@ -56,3 +56,4 @@ packages
 - [nbhaohao](https://github.com/nbhaohao/fe-source-tour)
 - [lyws](https://github.com/XiChaoMing/xcm-source-tour)
 - [兰芯](https://github.com/SaberWangSo/tour-lan)
+- [漫步火星](https://github.com/mars-jumper/source)
