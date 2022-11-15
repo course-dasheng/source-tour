@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <div id="app">
+  
+  </div>
+  <script>
+
+    import {reactive,effect} from '@shengxj/reactivity'
+
+    const container = document.querySelector('#app')
+
+    const obj = reactive({msg:'helloworld'})
+    const App = {
+      type:"h2", // div, function(){return 其他的组件}
+      // children/...
+      children:obj.msg
+    }
+    // 描述组件/html标签的对象，称之为vnode 虚拟节Dom点
+    function render(container,vnode){
+      if(container._vnode){
+        // 更新  path update的逻辑,patch和浏览器操作dom息息相关的
+        patch()
+      }else{
+        // 首次渲染 mount浏览器操作dom
+        container.innerHTML = vnode.children
+        container._vnode = vnode // 缓存在dom上
+      }
+      // 没有区分首次渲染和更新
+      // 首次渲染，没啥优化空间，就是createElement + appendChild..
+      
+      // 更新，是考虑复用dom的
+    }
+    //可以从其他的地方import
+    const nodeOps = {
+      createElement(...args){
+        return document.createElement(...args)
+      },
+      insert(){},
+      setText(){
+        // 设置文本
+      },
+      patchProps(el,key,prev,next){
+        普通 el.setAttribute() //
+        el[key] = next
+        // class要用className
+        // style，可以用cssText
+        // ....
+      } // 更新属性
+    }
+    //
+    function createRenderer(options){
+      const {createElement,insert,setText,patchProps} = options
+      //所有的操作，都和浏览器解耦
+      function patch(oldVnode,newVnode,container){
+        // 更新组件, 之前有一个vnode，现在还有新的vnode 怎么更新，是有组件的
+        // 如何判断新老dom可以复用
+        if(oldVnode.type!==newVnode.type){
+          // old是个div， new是个p标签 没有优化空间
+          unmount(oldVnode)
+          mount(newVnode)
+        }else {
+          // 两个都是div
+          // patchProps(oldVnode,newVnode)
+          // {id:xx, style: class:}
+
+          if(vnode.props){
+            for(const key in vnode.props){
+              patchProps(vnode.el, key, oldVnode.props[key],newVnode.props[key])
+            }
+          }
+          // 递归处理子元素
+          if(oldVNode是文本, newVnode是元素){
+            清理old，createElement(newVnode)
+          }
+
+          if(oldVnode.children.length && newVnode.children.length){
+            // 两个都是数组，  最复杂的虚拟dom diff 阅读难度最大的一个函数
+          }
+        }
+      } 
+
+
+      function unmount(vnode){
+        vnode.el.parentNode.removeChild(vnode.el)
+      }
+      function mount(vnode,contaienr){
+        if(typeof vnode.type=='string'){
+          // dom元素
+          let ele = createElement(vnode.type)
+          setText(ele, vnode.children)
+          // props setAttribute()
+          insert(container,ele)
+        }else if(typeof vnode.type==='function'){ //render函数
+          // 组件的渲染逻辑了 有props，有setup，有生命周期 @Todo
+        }
+
+          // 递归mount子元素
+      }
+      function render(container,vnode){
+        if(container._vnode){
+        // 更新  path update的逻辑,patch和浏览器操作dom息息相关的
+          patch(container._vnode, vnode,container)
+        }else{
+          // 首次渲染 mount浏览器操作dom 
+          let ele = createElement(vnode.type)
+          setText(ele, vnode.children)
+          // props setAttribute()
+          insert(container,ele)
+          // 子元素的mount 录播TODO
+          container._vnode = vnode // 缓存在dom上
+        }
+      }
+
+    }
+    const renderer = createRenderer(nodeOps)
+
+
+    for(let i=0;i<newVnode.length;i++){
+      let newnode = newVnode[i]
+      let oldnode = oldVnode[i]
+      patch(oldnode,newnode)
+    }
+
+    // Vue中，组件之间是响应式通知的，组件内部是虚拟dom的diff计算
+
+
+    // const canvasRenderer = createRenderer(canvasOps)
+    effect(()=>{
+      render(container,App)
+    })
+
+    obj.msg = 'xx'
+
+
+    先从头开始，结束了
+    再从尾开始  
+    结束了，
+      如果old空了， new剩下的都是新的，需要mount
+      如果new 空了， old剩下的是多余的，需要unmount
+      如果都没空
+      先找最长递增子序列(leetcode第300题，课里有)
+        动态规划
+        贪心+二分（vue用的算法）
+
+
+
+    oldvnode
+    [2,4,6,5,7,9]  [2,4,6]
+    newVnode
+    [1,2,3,4,5,6]
+
+    mout 3
+    unmount 3
+
+  </script>
+
+</body>
+</html>
