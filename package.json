@@ -5,12 +5,12 @@
   "main": "index.js",
   "scripts": {
     "publish": "pnpm -r publish --access public --no-git-checks",
-    "test:vue": "vitest packages/reactivity",
-    "test": "vitest packages/",
+    "test:vue": "vitest vue",
+    "test": "vitest",
     "build:utils": "pnpm run --filter @shengxj/utils build",
     "build:reactivity": "pnpm run --filter @shengxj/reactivity build",
     "build": "pnpm run  --filter=\"@shengxj/*\" --filter='shengxj' build ",
-    "lint": "eslint packages/**/src --fix",
+    "lint": "eslint ./ --fix",
     "docs": "vitepress dev docs/",
     "docs:build": "vitepress build docs/"
   },
