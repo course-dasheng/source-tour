@@ -28,6 +28,14 @@ packages
       - template.html 模板引擎
 ```
 
+## 感谢
+- [Vue](https://github.com/vuejs/core)
+- [React](https://github.com/facebook/react)
+- [Vite](https://github.com/vitejs/vite)
+- [Rollup](https://github.com/rollup/rollup)
+- [ESbuild](https://github.com/evanw/esbuild)
+- [mini-vue](https://github.com/cuixiaorui/mini-vue)
+- [just-react](https://github.com/BetaSu/just-react)
 ## 学员作品
 
 - [学员网名](作品链接)
