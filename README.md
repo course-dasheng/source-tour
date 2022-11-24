@@ -16,16 +16,29 @@
    2. 实战优先 && 提 pr && 写文章输出
    3. 内部讨论会
    4. 准备好你的 github
-   5. 使用 js or ts（esno，tsup)
+   5. 使用 js or ts（esno，tsup, unbuild)
       1. 先从 vue 的响应式 和脚手架框架开始
 
 ```
 packages
-   - reactivity 响应式
+   - 
    - utils 工具库
    - demo-intro
       - jquery.js mini jquery + jsonp
       - template.html 模板引擎
+vue
+   - reactivity 响应式
+   - compiler-dom
+   - compiler-core
+   - runtime-core
+   - runtime-dom
+react
+   - jsx
+   - react
+   - react-dom
+vite
+   - vite
+   - rollup
 ```
 
 ## 感谢
