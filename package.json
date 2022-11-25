@@ -7,11 +7,11 @@
     "build:utils": "pnpm run --filter @shengxj/utils build",
     "build:reactivity": "pnpm run --filter @shengxj/reactivity build",
     "build": "pnpm run  --filter=\"@shengxj/*\"  build ",
-    "test": "vitest packages/",
-    "test:once": "vitest run packages/",
+    "test": "vitest .",
+    "test:once": "vitest run .",
     "coverage": "vitest run --coverage",
-    "lint":"eslint packages/**/src",
-    "lint:fix":"eslint packages/**/src --fix"
+    "lint":"eslint .",
+    "lint:fix":"eslint ./ --fix"
   },
   "keywords": [],
   "author": "",

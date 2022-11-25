@@ -19,14 +19,14 @@ importers:
       unbuild: 0.9.4
       vitest: 0.24.5
 
-  packages/reactivity:
+  packages/utils:
+    specifiers: {}
+
+  vue/reactivity:
     specifiers:
       '@shengxj/utils': workspace:*
     dependencies:
-      '@shengxj/utils': link:../utils
-
-  packages/utils:
-    specifiers: {}
+      '@shengxj/utils': link:../../packages/utils
 
 packages:
 
